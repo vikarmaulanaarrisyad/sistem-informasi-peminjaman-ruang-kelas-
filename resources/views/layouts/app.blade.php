@@ -256,7 +256,7 @@
 
     @stack('scripts')
 
- <script>
+ {{-- <script>
         function animateElements() {
             var elements = document.querySelectorAll('.element');
             for (var i = 0; i < elements.length; i++) {
@@ -289,7 +289,7 @@
         }
 
         setInterval(displayCurrentTime, 1000); // Memperbarui waktu setiap detik
-    </script>
+    </script> --}}
 
 
 </body>

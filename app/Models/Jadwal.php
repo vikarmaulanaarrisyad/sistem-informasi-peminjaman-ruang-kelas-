@@ -27,6 +27,10 @@ class Jadwal extends Model
     {
         return $this->belongsTo(Ruang::class);
     }
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class);
+    }
 
     //scope binding untuk mencari hari
     public function scopeHariIni()

@@ -7,6 +7,7 @@ use App\Http\Controllers\{
     KelasController,
     MahasiswaController,
     MatakuliahController,
+    PeminjamanController,
     RuangController,
     UserProfileInformationController
 };
@@ -68,6 +69,10 @@ Route::group([
         Route::get('jadwal/data', [JadwalController::class, 'data'])->name('jadwal.data');
         Route::resource('jadwal', JadwalController::class)->except('create', 'edit');
         Route::get('jadwal/{jadwal}/detail', [JadwalController::class, 'detail'])->name('jadwal.detail');
+
+        //Route peminjaman
+        Route::get('peminjaman/data',[PeminjamanController::class,'data'])->name('peminjaman.data');
+        Route::resource('peminjaman', PeminjamanController::class);
     });
     Route::group([
         'middleware' => 'role:mahasiswa',

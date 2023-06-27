@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Jadwal;
 use App\Models\Kelas;
 use App\Models\Matakuliah;
+use App\Models\Peminjaman;
 use App\Models\Ruang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -20,7 +21,7 @@ class JadwalController extends Controller
         $dataMatakuliah = Matakuliah::all();
         $dataRuang = Ruang::all();
 
-        return view ('admin.jadwal.index', compact('dataKelas','dataMatakuliah', 'dataRuang'));
+        return view('admin.jadwal.index', compact('dataKelas', 'dataMatakuliah', 'dataRuang'));
     }
 
     /**
@@ -28,7 +29,7 @@ class JadwalController extends Controller
      */
     public function data(Request $request)
     {
-        $query = Jadwal::hariIni()->with('kelas');
+        $query = Jadwal::hariIni()->with('kelas', 'peminjaman');
 
         return datatables($query)
             ->addIndexColumn()
@@ -54,13 +55,41 @@ class JadwalController extends Controller
                 return $query->ruang->name;
             })
             ->addColumn('aksi', function ($query) {
+                if ($query->jadwal_id > 0) {
+                    // Kode yang akan dijalankan jika jadwal_id kosong (NULL)
+                    // Misalnya, tambahkan logika alternatif atau kembalikan respons yang sesuai
+                    return 'Kosong';
+                } else {
+                    foreach ($query->peminjaman as $pinjam) {
+                        if ($pinjam->jadwal_id == $query->id) {
+                        // Kode yang akan dijalankan jika jadwal_id terisi dan kondisi terpenuhi
+                        // Misalnya, tambahkan logika tambahan atau kembalikan respons yang sesuai
+                        return '
+                            <div class="btn-group">
+                                <button disabled class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
+                            </div>
+                        ';
+                        } else {
+                            return '
+                            <div class="btn-group">
+                                <button onclick="detailForm(`' . route('jadwal.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
+                            </div>
+                        ';
+                        }
+                    }
                 return '
                     <div class="btn-group">
-                    <button onclick="detailForm(`' . route('jadwal.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
+                        <button onclick="detailForm(`' . route('jadwal.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
                     </div>
-                    ';
-                    // <button onclick="editForm(`' . route('jadwal.show', $query->id) . '`)" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>
+                ';
+                }
+                // return '
+                //     <div class="btn-group">
+                //         <button onclick="detailForm(`' . route('jadwal.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
+                //     </div>
+                // ';
             })
+            ->rawColumns(['aksi'])
             ->escapeColumns([])
             ->make(true);
     }

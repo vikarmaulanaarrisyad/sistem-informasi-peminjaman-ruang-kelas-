@@ -87,7 +87,7 @@
                 .done(response => {
                     $(modalDetail).modal('show');
                     $(`${modalDetail} .modal-title`).text(title);
-                    ScanQR();
+                    ScanQR(response.data.id);
                 })
 
         }
@@ -186,10 +186,8 @@
             })
         }
 
-        function ScanQR() {
+        function ScanQR(jadwalId) {
             function onScanSuccess(decodedText, decodedResult) {
-                // handle the scanned code as you like, for example:
-                // console.log(`Code matched = ${decodedText}`, decodedResult);
                 let nim = decodedText;
                 csrf_token = $('meta[name="csrf-token"]').attr('content');
                 html5QrcodeScanner.clear();
@@ -197,13 +195,46 @@
                 $(modalDetail).modal('hide');
 
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Berhasil',
-                    text: nim,
+                    icon: 'warning',
+                    title: 'Scan berhasil',
+                    text: 'NIM Mahasiswa ' + nim,
                     showConfirmButton: false,
                     timer: 3000
                 }).then(() => {
-                    window.location.href = '{{ route('jadwal.index') }}';
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('peminjaman.store') }}",
+                        data: {
+                            'nim': nim,
+                            'jadwal_id': jadwalId,
+                            '_token': csrf_token
+                        },
+                        success: function(response) {
+                          Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: response.message,
+                                showConfirmButton: false,
+                                timer: 3000
+                            }).then(() => {
+                                table.ajax.reload();
+                                window.location.href = '{{ route('kelas.index') }}';
+                            });
+                        },
+                        error: function(response) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Opps! Gagal!',
+                                text: response.responseJSON.message,
+                                showConfirmButton: false,
+                                timer: 3000
+                            }).then(() => {
+                                table.ajax.reload();
+
+                                window.location.href = '{{ route('jadwal.index') }}';
+                            });
+                        }
+                    });
                 });
 
             }
