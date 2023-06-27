@@ -98,7 +98,7 @@
                      </li>
                      <li class="nav-header">TRANSAKSI</li>
                      <li class="nav-item">
-                         <a href="#" class="nav-link {{ request()->is('admin/peminjaman*') ? 'active' : '' }}">
+                         <a href="{{ route('peminjaman.index') }}" class="nav-link {{ request()->is('admin/peminjaman*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-sign-in-alt"></i>
                              <p>
                                  Peminjaman

@@ -13,4 +13,9 @@ class Peminjaman extends Model
     {
         return $this->belongsTo(Jadwal::class);
     }
+
+    public function mahasiswa()
+    {
+        return $this->belongsTo(Mahasiswa::class);
+    }
 }

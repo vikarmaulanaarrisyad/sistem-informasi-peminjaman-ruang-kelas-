@@ -13,7 +13,7 @@
             processing: true,
             autoWidth: false,
             ajax: {
-                url: '{{ route('jadwal.data') }}',
+                url: '{{ route('peminjaman.data') }}',
             },
             columns: [{
                     data: 'DT_RowIndex',
@@ -22,24 +22,20 @@
                 },
 
                 {
-                    data: 'matakuliah'
+                    data: 'jadwal'
                 },
                 {
-                    data: 'dosen'
+                    data: 'mahasiswa'
                 },
                 {
-                    data: 'kelas'
+                    data: 'mulai'
                 },
                 {
-                    data: 'waktu_mulai'
+                    data: 'selesai'
                 },
                 {
-                    data: 'waktu_selesai'
+                    data: 'status'
                 },
-                {
-                    data: 'ruang'
-                },
-
                 {
                     data: 'aksi',
                     sortable: false,
@@ -48,7 +44,7 @@
             ]
         });
 
-        function addForm(url, title = 'Tambah Daftar Jadwal') {
+        function addForm(url, title = 'Tambah Daftar kelas') {
             $(modal).modal('show');
             $(`${modal} .modal-title`).text(title);
             $(`${modal} form`).attr('action', url);
@@ -58,7 +54,7 @@
             resetForm(`${modal} form`);
         }
 
-        function editForm(url, title = 'Edit Daftar Jadwal') {
+        function editForm(url, title = 'Edit Daftar kelas') {
             $.get(url)
                 .done(response => {
                     $(modal).modal('show');
@@ -82,12 +78,19 @@
                 });
         }
 
-        function detailForm(url, title = 'Scan QRCode') {
+        function detailForm(url, title = 'Detail Kelas') {
             $.get(url)
                 .done(response => {
                     $(modalDetail).modal('show');
                     $(`${modalDetail} .modal-title`).text(title);
-                    ScanQR(response.data.id);
+
+                    $('.foto').attr('src', response.data.foto)
+                    $('.name').text(response.data.name)
+                    $('.email').text(response.data.email)
+                    $('.password').text(response.data.pass)
+                    $('.kelas').text(response.data.kelas)
+                    $('.nohp').text(response.data.nomor_hp)
+                    $('.nim').text(response.data.nim)
                 })
 
         }
@@ -186,76 +189,14 @@
             })
         }
 
-        function ScanQR(jadwalId) {
-            function onScanSuccess(decodedText, decodedResult) {
-                let nim = decodedText;
-                csrf_token = $('meta[name="csrf-token"]').attr('content');
-                html5QrcodeScanner.clear();
-
-                $(modalDetail).modal('hide');
-
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Scan berhasil',
-                    text: 'NIM Mahasiswa ' + nim,
-                    showConfirmButton: false,
-                    timer: 3000
-                }).then(() => {
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ route('peminjaman.store') }}",
-                        data: {
-                            'nim': nim,
-                            'jadwal_id': jadwalId,
-                            '_token': csrf_token
-                        },
-                        success: function(response) {
-                          Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.message,
-                                showConfirmButton: false,
-                                timer: 3000
-                            }).then(() => {
-                                table.ajax.reload();
-                                window.location.href = '{{ route('peminjaman.index') }}';
-                            });
-                        },
-                        error: function(response) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Opps! Gagal!',
-                                text: response.responseJSON.message,
-                                showConfirmButton: false,
-                                timer: 3000
-                            }).then(() => {
-                                table.ajax.reload();
-
-                                // window.location.href = '{{ route('jadwal.index') }}';
-                            });
-                        }
-                    });
-                });
-
-            }
-
-            function onScanFailure(error) {
-                // handle scan failure, usually better to ignore and keep scanning.
-                // for example:
-                // console.warn(`Code scan error = ${error}`);
-            }
-
-            let html5QrcodeScanner = new Html5QrcodeScanner(
-                "reader", {
-                    fps: 10,
-                    qrbox: {
-                        width: 250,
-                        height: 250
-                    }
-                },
-                /* verbose= */
-                false);
-            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        function importForm(url, title = 'Import Petugas') {
+            $(modal2).modal('show');
+            $(`${modal2} .modal-title`).text(title);
+            $(`${modal2} form`).attr('action', url);
+            $(`${modal2} [name=_method]`).val('POST');
+            $('#spinner-border').hide();
+            $(button).prop('disabled', false);
+            resetForm(`${modal2} form`);
         }
     </script>
 @endpush

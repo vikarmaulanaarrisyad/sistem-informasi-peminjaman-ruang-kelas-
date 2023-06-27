@@ -15,7 +15,7 @@ class PeminjamanController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.peminjaman.index');
     }
     /**
      * Display a listing of the resource.
@@ -26,6 +26,24 @@ class PeminjamanController extends Controller
 
         return datatables($query)
             ->addIndexColumn()
+            ->addColumn('jadwal', function ($query) {
+                return $query->jadwal->kelas->name;
+            })
+            ->addColumn('mahasiswa', function ($query) {
+                return $query->mahasiswa->name;
+            })
+            ->addColumn('mulai', function ($query) {
+                return date('d-m-Y H:i:s', strtotime($query->created_at));
+            })
+            ->addColumn('selesai', function ($query) {
+                if ($query->status == 'kembali') {
+                    return date('d-m-Y H:i:s', strtotime($query->updated_at));
+                }
+                return '-';
+            })
+            ->addColumn('status', function ($query) {
+                return '';
+            })
             ->escapeColumns([])
             ->make(true);
     }
@@ -44,9 +62,7 @@ class PeminjamanController extends Controller
     public function store(Request $request)
     {
         $mahasiswa = Mahasiswa::where('nim', $request->nim)->first();
-        $jadwal = Jadwal::findOrfail($request->jadwal_id);
-
-
+        $jadwal = Jadwal::findOrFail($request->jadwal_id);
 
         $currentTime = new DateTime();
         $waktuSekarang = $currentTime->format('H:i:s');
@@ -55,16 +71,16 @@ class PeminjamanController extends Controller
             return response()->json(['message' => 'Data Mahasiswa tidak ditemukan dalam sistem.'], 422);
         }
 
-        $peminjaman = Peminjaman::where('mahasiswa_id', $mahasiswa->id)->first();
-
-        if($mahasiswa->id == $peminjaman->mahasiswa_id) {
-            return response()->json(['message' => 'Mahasiswa sedang dalam proses pinjam ruangan.'], 422);
+        if ($waktuSekarang < $jadwal->waktu_mulai) {
+            return response()->json(['message' => 'Jadwal matakuliah belum dimulai.'], 422);
+        } else if ($waktuSekarang > $jadwal->waktu_selesai) {
+            return response()->json(['message' => 'Jadwal matakuliah sudah berakhir.'], 422);
         }
 
-        if ($jadwal->waktu_mulai < $waktuSekarang) {
-            return response()->json(['message' => 'Jadwal matakuliah belum dimulai.'], 422);
-        } else if ($jadwal->waktu_mulai > $waktuSekarang) {
-            return response()->json(['message' => 'Jadwal matakuliah sudah berakhir.'], 422);
+        $peminjaman = Peminjaman::where('mahasiswa_id', $mahasiswa->id)->first();
+
+        if ($peminjaman && $peminjaman->status == "pinjam") {
+            return response()->json(['message' => 'Mahasiswa sedang dalam proses pinjam ruangan.'], 422);
         }
 
         $data = [

@@ -56,12 +56,17 @@ class JadwalController extends Controller
             })
             ->addColumn('aksi', function ($query) {
                 if ($query->jadwal_id > 0) {
-                    // Kode yang akan dijalankan jika jadwal_id kosong (NULL)
-                    // Misalnya, tambahkan logika alternatif atau kembalikan respons yang sesuai
-                    return 'Kosong';
+                // // Kode yang akan dijalankan jika jadwal_id kosong (NULL)
+                // // Misalnya, tambahkan logika alternatif atau kembalikan respons yang sesuai
+                // return 'Kosong';
+                return '
+                    <div class="btn-group">
+                        <button onclick="detailForm(`' . route('jadwal.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
+                    </div>
+                ';
                 } else {
                     foreach ($query->peminjaman as $pinjam) {
-                        if ($pinjam->jadwal_id == $query->id) {
+                        if ($pinjam->jadwal_id == $query->id && $pinjam->status == "pinjam") {
                         // Kode yang akan dijalankan jika jadwal_id terisi dan kondisi terpenuhi
                         // Misalnya, tambahkan logika tambahan atau kembalikan respons yang sesuai
                         return '
@@ -83,11 +88,7 @@ class JadwalController extends Controller
                     </div>
                 ';
                 }
-                // return '
-                //     <div class="btn-group">
-                //         <button onclick="detailForm(`' . route('jadwal.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
-                //     </div>
-                // ';
+
             })
             ->rawColumns(['aksi'])
             ->escapeColumns([])
