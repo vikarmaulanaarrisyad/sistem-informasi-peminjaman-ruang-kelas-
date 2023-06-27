@@ -28,7 +28,7 @@ class JadwalController extends Controller
      */
     public function data(Request $request)
     {
-        $query = Jadwal::with('kelas');
+        $query = Jadwal::hariIni()->with('kelas');
 
         return datatables($query)
             ->addIndexColumn()
@@ -38,10 +38,25 @@ class JadwalController extends Controller
                 }
                 return $query->kelas->name;
             })
+            ->addColumn('matakuliah', function ($query) {
+                if ($query->matakuliah_id == null) {
+                    return 'Belum ada kelas';
+                }
+                return $query->matakuliah->name;
+            })
+            ->addColumn('dosen', function ($query) {
+                return $query->dosen->name ?? '';
+            })
+            ->addColumn('ruang', function ($query) {
+                if ($query->ruang_id == null) {
+                    return '';
+                }
+                return $query->ruang->name;
+            })
             ->addColumn('aksi', function ($query) {
                 return '
                     <div class="btn-group">
-                    <button onclick="detailForm(`' . route('jadwal.detail', $query->kelas_id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Detail</button>
+                    <button onclick="detailForm(`' . route('jadwal.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
                     </div>
                     ';
                     // <button onclick="editForm(`' . route('jadwal.show', $query->id) . '`)" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>
@@ -97,7 +112,7 @@ class JadwalController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function detail($id)
     {
         $jadwal = Jadwal::findOrfail($id);
 

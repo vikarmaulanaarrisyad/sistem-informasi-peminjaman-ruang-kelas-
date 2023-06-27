@@ -19,8 +19,20 @@ class Jadwal extends Model
         return $this->belongsTo(Matakuliah::class);
     }
 
+    public function dosen()
+    {
+        return $this->belongsTo(Dosen::class);
+    }
     public function ruang()
     {
         return $this->belongsTo(Ruang::class);
+    }
+
+    //scope binding untuk mencari hari
+    public function scopeHariIni()
+    {
+        $hari = format_hari(date("D"));
+
+        return $this->where('hari', $hari);
     }
 }

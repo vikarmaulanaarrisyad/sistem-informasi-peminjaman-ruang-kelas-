@@ -22,7 +22,22 @@
                 },
 
                 {
+                    data: 'matakuliah'
+                },
+                {
+                    data: 'dosen'
+                },
+                {
                     data: 'kelas'
+                },
+                {
+                    data: 'waktu_mulai'
+                },
+                {
+                    data: 'waktu_selesai'
+                },
+                {
+                    data: 'ruang'
                 },
 
                 {
@@ -67,19 +82,12 @@
                 });
         }
 
-        function detailForm(url, title = 'Detail Jadwal') {
+        function detailForm(url, title = 'Scan QRCode') {
             $.get(url)
                 .done(response => {
                     $(modalDetail).modal('show');
                     $(`${modalDetail} .modal-title`).text(title);
-
-                    $('.foto').attr('src', response.data.foto)
-                    $('.name').text(response.data.name)
-                    $('.email').text(response.data.email)
-                    $('.password').text(response.data.pass)
-                    $('.kelas').text(response.data.kelas)
-                    $('.nohp').text(response.data.nomor_hp)
-                    $('.nim').text(response.data.nim)
+                    ScanQR();
                 })
 
         }
@@ -178,14 +186,45 @@
             })
         }
 
-        function importForm(url, title = 'Import Petugas') {
-            $(modal2).modal('show');
-            $(`${modal2} .modal-title`).text(title);
-            $(`${modal2} form`).attr('action', url);
-            $(`${modal2} [name=_method]`).val('POST');
-            $('#spinner-border').hide();
-            $(button).prop('disabled', false);
-            resetForm(`${modal2} form`);
+        function ScanQR() {
+            function onScanSuccess(decodedText, decodedResult) {
+                // handle the scanned code as you like, for example:
+                // console.log(`Code matched = ${decodedText}`, decodedResult);
+                let nim = decodedText;
+                csrf_token = $('meta[name="csrf-token"]').attr('content');
+                html5QrcodeScanner.clear();
+
+                $(modalDetail).modal('hide');
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Berhasil',
+                    text: nim,
+                    showConfirmButton: false,
+                    timer: 3000
+                }).then(() => {
+                    window.location.href = '{{ route('jadwal.index') }}';
+                });
+
+            }
+
+            function onScanFailure(error) {
+                // handle scan failure, usually better to ignore and keep scanning.
+                // for example:
+                // console.warn(`Code scan error = ${error}`);
+            }
+
+            let html5QrcodeScanner = new Html5QrcodeScanner(
+                "reader", {
+                    fps: 10,
+                    qrbox: {
+                        width: 250,
+                        height: 250
+                    }
+                },
+                /* verbose= */
+                false);
+            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
         }
     </script>
 @endpush
