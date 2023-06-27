@@ -5,6 +5,7 @@ use App\Http\Controllers\{
     DosenController,
     KelasController,
     MahasiswaController,
+    MatakuliahController,
     UserProfileInformationController
 };
 use Illuminate\Support\Facades\Route;
@@ -50,6 +51,11 @@ Route::group([
         Route::get('kelas/data', [KelasController::class, 'data'])->name('kelas.data');
         Route::resource('kelas', KelasController::class)->except('create', 'edit');
         Route::get('kelas/{kelas}/detail', [KelasController::class, 'detail'])->name('kelas.detail');
+
+        //Route Matakuliah
+        Route::get('matakuliah/data',[MatakuliahController::class,'data'])->name('matakuliah.data');
+        Route::resource('matakuliah',MatakuliahController::class)->except('create','edit');
+        Route::get('matakuliah/{matakuliah}/detail',[MatakuliahController::class,'detail'])->name('matakuliah.detail');
 
     });
     Route::group([

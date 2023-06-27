@@ -65,7 +65,7 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="#" class="nav-link {{ request()->is('admin/jadwal*') ? 'active' : '' }}">
+                         <a href="{{ route('matakuliah.index') }}" class="nav-link {{ request()->is('admin/matakuliah*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-book"></i>
                              <p>
                                  Data Mata Kuliah
