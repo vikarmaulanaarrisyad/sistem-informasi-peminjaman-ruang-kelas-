@@ -3,9 +3,11 @@
 use App\Http\Controllers\{
     DashboardController,
     DosenController,
+    JadwalController,
     KelasController,
     MahasiswaController,
     MatakuliahController,
+    RuangController,
     UserProfileInformationController
 };
 use Illuminate\Support\Facades\Route;
@@ -40,12 +42,17 @@ Route::group([
         // route mahasiswa
         Route::get('mahasiswa/data', [MahasiswaController::class, 'data'])->name('mahasiswa.data');
         Route::get('mahasiswa/{mahaiswa}/detail', [MahasiswaController::class, 'detail'])->name('mahasiswa.detail');
-        Route::resource('mahasiswa', MahasiswaController::class)->except('create', 'edit', 'destroy', 'update','show');
+        Route::resource('mahasiswa', MahasiswaController::class)->except('create', 'edit', 'destroy', 'update', 'show');
 
         //route dosen
         Route::get('dosen/data', [DosenController::class, 'data'])->name('dosen.data');
-        Route::resource('dosen', DosenController::class)->except('create','edit');
+        Route::resource('dosen', DosenController::class)->except('create', 'edit');
         Route::get('dosen/{dosen}/detail', [DosenController::class, 'detail'])->name('dosen.detail');
+
+        //route kelas
+        Route::get('ruang/data', [RuangController::class, 'data'])->name('ruang.data');
+        Route::resource('ruang', RuangController::class)->except('create', 'edit');
+        Route::get('ruang/{ruang}/detail', [RuangController::class, 'detail'])->name('ruang.detail');
 
         //route kelas
         Route::get('kelas/data', [KelasController::class, 'data'])->name('kelas.data');
@@ -53,10 +60,14 @@ Route::group([
         Route::get('kelas/{kelas}/detail', [KelasController::class, 'detail'])->name('kelas.detail');
 
         //Route Matakuliah
-        Route::get('matakuliah/data',[MatakuliahController::class,'data'])->name('matakuliah.data');
-        Route::resource('matakuliah',MatakuliahController::class)->except('create','edit');
-        Route::get('matakuliah/{matakuliah}/detail',[MatakuliahController::class,'detail'])->name('matakuliah.detail');
+        Route::get('matakuliah/data', [MatakuliahController::class, 'data'])->name('matakuliah.data');
+        Route::resource('matakuliah', MatakuliahController::class)->except('create', 'edit');
+        Route::get('matakuliah/{matakuliah}/detail', [MatakuliahController::class, 'detail'])->name('matakuliah.detail');
 
+        //Route Jadwal
+        Route::get('jadwal/data', [JadwalController::class, 'data'])->name('jadwal.data');
+        Route::resource('jadwal', JadwalController::class)->except('create', 'edit');
+        Route::get('jadwal/{jadwal}/detail', [JadwalController::class, 'detail'])->name('jadwal.detail');
     });
     Route::group([
         'middleware' => 'role:mahasiswa',

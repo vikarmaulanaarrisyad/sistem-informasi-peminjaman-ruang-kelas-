@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kelas;
+use App\Models\Ruang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class KelasController extends Controller
+class RuangController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view ('admin.kelas.index');
+        return view('admin.ruang.index');
     }
 
     /**
@@ -21,7 +21,7 @@ class KelasController extends Controller
      */
     public function data(Request $request)
     {
-        $query = Kelas::all();
+        $query = Ruang::all();
 
         return datatables($query)
             ->addIndexColumn()
@@ -29,8 +29,8 @@ class KelasController extends Controller
             ->addColumn('aksi', function ($query) {
                 return '
                     <div class="btn-group">
-                    <button onclick="editForm(`' . route('kelas.show', $query->id) . '`)" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>
-                     <button onclick="detailForm(`' . route('kelas.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Detail</button>
+                    <button onclick="editForm(`' . route('ruang.show', $query->id) . '`)" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>
+                     <button onclick="detailForm(`' . route('ruang.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Detail</button>
                 </div>
                 ';
             })
@@ -48,7 +48,7 @@ class KelasController extends Controller
         ];
 
         $message = [
-            'name.required' => 'Nama kelas wajib diisi.'
+            'name.required' => 'Nama ruangan wajib diisi.'
         ];
 
         $validator = Validator::make($request->all(), $rules, $message);
@@ -61,7 +61,7 @@ class KelasController extends Controller
             'name' => trim($request->name),
         ];
 
-        $result = Kelas::create($data);
+        $result = Ruang::create($data);
 
         return response()->json(['data' => $result, 'message' => 'Data berhasil disimpan.']);
     }
@@ -71,9 +71,9 @@ class KelasController extends Controller
      */
     public function show($id)
     {
-        $kelas = Kelas::findOrfail($id);
+        $ruang = Ruang::findOrfail($id);
 
-        return response()->json(['data' => $kelas]);
+        return response()->json(['data' => $ruang]);
     }
 
     /**
@@ -81,24 +81,24 @@ class KelasController extends Controller
      */
     public function detail($id)
     {
-        $kelas = Kelas::findOrfail($id);
+        $ruang = Ruang::findOrfail($id);
 
-        return response()->json(['data' => $kelas]);
+        return response()->json(['data' => $ruang]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
-        $kelas = Kelas::findOrfail($id);
+        $ruang = Ruang::findOrfail($id);
 
         $rules = [
             'name' => 'required',
         ];
 
         $message = [
-            'name.required' => 'Nama kelas wajib diisi.'
+            'name.required' => 'Nama ruang wajib diisi.'
         ];
 
         $validator = Validator::make($request->all(), $rules, $message);
@@ -111,7 +111,7 @@ class KelasController extends Controller
             'name' => trim($request->name),
         ];
 
-        $result = $kelas->update($data);
+        $result = $ruang->update($data);
 
         return response()->json(['data' => $result, 'message' => 'Data berhasil disimpan.']);
     }
@@ -119,7 +119,7 @@ class KelasController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Kelas $kelas)
+    public function destroy($id)
     {
         //
     }

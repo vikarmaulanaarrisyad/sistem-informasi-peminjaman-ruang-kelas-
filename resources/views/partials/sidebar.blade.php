@@ -57,6 +57,14 @@
                          </a>
                      </li>
                      <li class="nav-item">
+                         <a href="{{route('ruang.index')}}" class="nav-link {{ request()->is('admin/ruang*') ? 'active' : '' }}">
+                             <i class="nav-icon fas fa-university"></i>
+                             <p>
+                                 Data Ruang
+                             </p>
+                         </a>
+                     </li>
+                     <li class="nav-item">
                          <a href="{{route('kelas.index')}}" class="nav-link {{ request()->is('admin/kelas*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-graduation-cap"></i>
                              <p>
@@ -73,7 +81,7 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="#" class="nav-link {{ request()->is('admin/jadwal*') ? 'active' : '' }}">
+                         <a href="{{ route('jadwal.index') }}" class="nav-link {{ request()->is('admin/jadwal*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-calendar-alt"></i>
                              <p>
                                  Data Jadwal
@@ -81,7 +89,7 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="#" class="nav-link {{ request()->is('admin/jadwal*') ? 'active' : '' }}">
+                         <a href="#" class="nav-link {{ request()->is('admin/perlengkapan*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-wrench"></i>
                              <p>
                                  Data Perlengkapan
@@ -90,7 +98,7 @@
                      </li>
                      <li class="nav-header">TRANSAKSI</li>
                      <li class="nav-item">
-                         <a href="#" class="nav-link {{ request()->is('admin/jadwal*') ? 'active' : '' }}">
+                         <a href="#" class="nav-link {{ request()->is('admin/peminjaman*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-sign-in-alt"></i>
                              <p>
                                  Peminjaman
@@ -98,7 +106,7 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="#" class="nav-link {{ request()->is('admin/jadwal*') ? 'active' : '' }}">
+                         <a href="#" class="nav-link {{ request()->is('admin/pengembalian*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-sign-in-alt"></i>
                              <p>
                                  Pengembalian
