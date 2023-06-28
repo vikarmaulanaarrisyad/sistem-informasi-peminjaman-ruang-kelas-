@@ -1,7 +1,6 @@
 @push('scripts')
     <script>
         let modal = '#modal-form';
-        let modal2 = '#import_petugas';
         let modalDetail = '#modal-detail';
         let button = '#submitBtn';
         let table;
@@ -14,30 +13,18 @@
             processing: true,
             autoWidth: false,
             ajax: {
-                url: '{{ route('mahasiswa.data') }}',
+                url: '{{ route('perlengkapan.data') }}',
             },
             columns: [{
                     data: 'DT_RowIndex',
                     searchable: false,
                     sortable: false
                 },
-                {
-                    data: 'foto',
-                    searchable: false,
-                    sortable: false
-                },
+
                 {
                     data: 'name'
                 },
-                {
-                    data: 'nim'
-                },
-                {
-                    data: 'nomor_hp'
-                },
-                {
-                    data: 'kelas'
-                },
+
                 {
                     data: 'aksi',
                     sortable: false,
@@ -46,7 +33,7 @@
             ]
         });
 
-        function addForm(url, title = 'Tambah Daftar Mahasiswa') {
+        function addForm(url, title = 'Tambah Daftar Perlengkapan') {
             $(modal).modal('show');
             $(`${modal} .modal-title`).text(title);
             $(`${modal} form`).attr('action', url);
@@ -56,7 +43,7 @@
             resetForm(`${modal} form`);
         }
 
-        function editForm(url, title = 'Edit Daftar Mahasiswa') {
+        function editForm(url, title = 'Edit Daftar Perlengkapan') {
             $.get(url)
                 .done(response => {
                     $(modal).modal('show');
@@ -80,19 +67,13 @@
                 });
         }
 
-        function detailForm(url, title = 'Detail Mahasiswa') {
+        function detailForm(url, title = 'Detail Perlengkapan') {
             $.get(url)
                 .done(response => {
                     $(modalDetail).modal('show');
                     $(`${modalDetail} .modal-title`).text(title);
 
-                    $('.foto').attr('src',response.data.foto)
                     $('.name').text(response.data.name)
-                    $('.email').text(response.data.email)
-                    $('.password').text(response.data.pass)
-                    $('.kelas').text(response.data.kelas)
-                    $('.nohp').text(response.data.nomor_hp)
-                    $('.nim').text(response.data.nim)
                 })
 
         }
@@ -191,14 +172,5 @@
             })
         }
 
-        function importForm(url, title = 'Import Petugas') {
-            $(modal2).modal('show');
-            $(`${modal2} .modal-title`).text(title);
-            $(`${modal2} form`).attr('action', url);
-            $(`${modal2} [name=_method]`).val('POST');
-            $('#spinner-border').hide();
-            $(button).prop('disabled', false);
-            resetForm(`${modal2} form`);
-        }
     </script>
 @endpush

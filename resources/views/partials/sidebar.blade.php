@@ -89,7 +89,7 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="#" class="nav-link {{ request()->is('admin/perlengkapan*') ? 'active' : '' }}">
+                         <a href="{{ route('perlengkapan.index') }}" class="nav-link {{ request()->is('admin/perlengkapan*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-wrench"></i>
                              <p>
                                  Data Perlengkapan
