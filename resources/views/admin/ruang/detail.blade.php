@@ -15,7 +15,13 @@
                             <td>:</td>
                             <td class="name"></td>
                         </tr>
-                       
+                        <tr>
+                            <td>Perlengkapan</td>
+                            <td>:</td>
+                            <td class="alat">
+                                {{-- <li class="perlengkapan"></li> --}}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

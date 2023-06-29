@@ -14,7 +14,7 @@
         <div class="col-md-12 col-lg-12">
             <x-card>
                 <x-slot name="header">
-                  <button onclick="addForm(`{{ route('ruang.store') }}`)" class="btn btn-outline-primary btn-sm"><i
+                    <button onclick="addForm(`{{ route('ruang.store') }}`)" class="btn btn-outline-primary btn-sm"><i
                             class="fas fa-plus-circle"></i> Tambah Data</button>
                 </x-slot>
 
@@ -34,4 +34,5 @@
     @includeIf('admin.ruang.detail')
 @endsection
 @include('include.datatable')
+@include('include.select2')
 @include('admin.ruang.scripts')

@@ -12,6 +12,18 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="name">Pilih Perlengkapan Ruang</label>
+                <select name="alat_id[]" id="alat_id" class="form-control select2" multiple>
+                    @foreach ($perlengkapan as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
 
     <x-slot name="footer">
         <button type="button" onclick="submitForm(this.form)" class="btn btn-sm btn-outline-primary" id="submitBtn">

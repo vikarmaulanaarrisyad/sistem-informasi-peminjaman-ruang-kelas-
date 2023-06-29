@@ -33,9 +33,9 @@ class KelasController extends Controller
                     <button onclick="editForm(`' . route('kelas.show', $query->id) . '`)" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>
                      <button onclick="detailForm(`' . route('kelas.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Detail</button>
                      <button onclick="addMahasiswaForm(`' . $query->id . '`)" class="btn btn-sm btn-warning"><i class="fas fa-plus-circle"></i> Mahasiswa</button>
-                     <button onclick="addMatakuliahForm(`' . $query->id . '`)" class="btn btn-sm btn-info"><i class="fas fa-plus-circle"></i> Matkul</button>
-                </div>
-                ';
+                     </div>
+                     ';
+                    //  <button onclick="addMatakuliahForm(`' . $query->id . '`)" class="btn btn-sm btn-info"><i class="fas fa-plus-circle"></i> Matkul</button>
             })
             ->escapeColumns([])
             ->make(true);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Perlengkapan;
 use App\Models\Ruang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,7 +14,9 @@ class RuangController extends Controller
      */
     public function index()
     {
-        return view('admin.ruang.index');
+        $perlengkapan = Perlengkapan::all();
+
+        return view('admin.ruang.index', compact('perlengkapan'));
     }
 
     /**
@@ -45,10 +48,12 @@ class RuangController extends Controller
     {
         $rules = [
             'name' => 'required',
+            'alat_id' => 'required'
         ];
 
         $message = [
-            'name.required' => 'Nama ruangan wajib diisi.'
+            'name.required' => 'Nama ruangan wajib diisi.',
+            'alat_id.required' => 'Perlengkapan ruangan wajib diisi.'
         ];
 
         $validator = Validator::make($request->all(), $rules, $message);
@@ -63,6 +68,8 @@ class RuangController extends Controller
 
         $result = Ruang::create($data);
 
+        $result->perlengkapan()->attach($request->alat_id);
+
         return response()->json(['data' => $result, 'message' => 'Data berhasil disimpan.']);
     }
 
@@ -71,7 +78,7 @@ class RuangController extends Controller
      */
     public function show($id)
     {
-        $ruang = Ruang::findOrfail($id);
+        $ruang = Ruang::with('perlengkapan')-> findOrfail($id);
 
         return response()->json(['data' => $ruang]);
     }
@@ -81,7 +88,7 @@ class RuangController extends Controller
      */
     public function detail($id)
     {
-        $ruang = Ruang::findOrfail($id);
+        $ruang = Ruang::with('perlengkapan')->findOrfail($id);
 
         return response()->json(['data' => $ruang]);
     }
@@ -91,14 +98,16 @@ class RuangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $ruang = Ruang::findOrfail($id);
+        $ruang = Ruang::with('perlengkapan')->findOrfail($id);
 
         $rules = [
             'name' => 'required',
+            'alat_id' => 'required'
         ];
 
         $message = [
-            'name.required' => 'Nama ruang wajib diisi.'
+            'name.required' => 'Nama ruangan wajib diisi.',
+            'alat_id.required' => 'Perlengkapan ruangan wajib diisi.'
         ];
 
         $validator = Validator::make($request->all(), $rules, $message);
@@ -111,9 +120,11 @@ class RuangController extends Controller
             'name' => trim($request->name),
         ];
 
-        $result = $ruang->update($data);
+        $ruang->update($data);
 
-        return response()->json(['data' => $result, 'message' => 'Data berhasil disimpan.']);
+        $ruang->perlengkapan()->sync($request->alat_id);
+
+        return response()->json(['data' => $ruang, 'message' => 'Data berhasil disimpan.']);
     }
 
     /**

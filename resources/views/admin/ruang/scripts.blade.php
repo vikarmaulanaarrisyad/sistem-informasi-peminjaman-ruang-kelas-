@@ -50,10 +50,20 @@
                     $(`${modal} .modal-title`).text(title);
                     $(`${modal} form`).attr('action', url);
                     $(`${modal} [name=_method]`).val('PUT');
+
                     $('#spinner-border').hide();
                     $(button).prop('disabled', false);
                     resetForm(`${modal} form`);
                     loopForm(response.data);
+
+                    let selectAlatId = [];
+                    response.data.perlengkapan.forEach(item => {
+                        selectAlatId.push(item.id);
+                    });
+
+                    $('#alat_id')
+                        .val(selectAlatId)
+                        .trigger('change');
                 })
                 .fail(errors => {
                     Swall.fire({
@@ -73,13 +83,18 @@
                     $(modalDetail).modal('show');
                     $(`${modalDetail} .modal-title`).text(title);
 
-                    $('.foto').attr('src', response.data.foto)
                     $('.name').text(response.data.name)
-                    $('.email').text(response.data.email)
-                    $('.password').text(response.data.pass)
-                    $('.kelas').text(response.data.kelas)
-                    $('.nohp').text(response.data.nomor_hp)
-                    $('.nim').text(response.data.nim)
+
+                    $('.alat').empty(); // Menghapus konten sebelumnya (opsional)
+
+                    let selectAlatId = [];
+                    response.data.perlengkapan.forEach(item => {
+                        selectAlatId.push(`<li>${item.name}</li>`);
+                    });
+
+                    $('.alat').append(selectAlatId.join('')); // Menambahkan elemen-elemen li ke dalam elemen dengan kelas "alat"
+
+
                 })
 
         }
