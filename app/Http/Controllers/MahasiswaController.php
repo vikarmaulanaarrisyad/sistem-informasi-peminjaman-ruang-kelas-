@@ -39,7 +39,11 @@ class MahasiswaController extends Controller
                 return $query->nomor_hp;
             })
             ->addColumn('kelas', function ($query) {
-                return '';
+                if($query->kelas === NULL) {
+                    return '
+                        <a href="'. route('kelas.index'). '" class="btn btn-sm btn-primary"><i class="fas fa-graduation-cap"></i> Pilih kelas</a>
+                    ';
+                }
             })
             ->addColumn('aksi', function ($query) {
                 return '

@@ -6,7 +6,7 @@
          </li>
          <li class="nav-item d-none d-sm-inline-block">
              <a class="nav-link animasi-teks text-bold">
-                 SISTEM INFORMASI PARKIR QRCODE PHB
+                 SISTEM INFORMASI PEMINJAMAN PERANGKAT PEMBELAJARAN
              </a>
          </li>
      </ul>
@@ -17,7 +17,7 @@
          <!-- Messages Dropdown Menu -->
          <li class="nav-item dropdown mr-3">
              <a class="nav-link" data-toggle="dropdown" href="javascript:void(0);">
-                 <img src="{{ Storage::url(auth()->user()->path_image) }}" class="img-circle" alt="User Image"
+                 <img src="{{ asset('assets/logo/logo.jpg') }}" class="img-circle" alt="User Image"
                      style="width: 29px ">
                  {{ auth()->user()->name }}
              </a>

@@ -178,14 +178,25 @@
             })
         }
 
-        function importForm(url, title = 'Import Petugas') {
-            $(modal2).modal('show');
-            $(`${modal2} .modal-title`).text(title);
-            $(`${modal2} form`).attr('action', url);
-            $(`${modal2} [name=_method]`).val('POST');
-            $('#spinner-border').hide();
-            $(button).prop('disabled', false);
-            resetForm(`${modal2} form`);
+        function addMahasiswaForm(kelasId) {
+            var url = "{{ route('kelas.form_mahasiswa', ['kelas_id' => ':kelas_id']) }}";
+            url = url.replace(':kelas_id', kelasId);
+
+            window.location.href = url;
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: {
+                    'kelas_id': kelasId,
+                },
+                dataType: "json",
+                success: function(response) {
+                    window.location.href = url;
+                },
+            });
         }
+
+
     </script>
 @endpush
