@@ -21,7 +21,7 @@ class MahasiswaController extends Controller
      */
     public function data()
     {
-        $query = Mahasiswa::with('user');
+        $query = Mahasiswa::with('user', 'kelas_mahasiswa');
 
         return datatables($query)
             ->addIndexColumn()
@@ -39,16 +39,22 @@ class MahasiswaController extends Controller
                 return $query->nomor_hp;
             })
             ->addColumn('kelas', function ($query) {
-                if($query->kelas === NULL) {
+                if ($query->kelas_mahasiswa === NULL) {
                     return '
-                        <a href="'. route('kelas.index'). '" class="btn btn-sm btn-primary"><i class="fas fa-graduation-cap"></i> Pilih kelas</a>
+                        <a href="' . route('kelas.index') . '" class="btn btn-sm btn-primary"><i class="fas fa-graduation-cap"></i> Pilih kelas</a>
                     ';
+                }
+
+                foreach ($query->kelas_mahasiswa as $kelas) {
+                    return '
+                    <span class="badge badge-success">kelas ' . $kelas->name.'</span>
+                   ';
                 }
             })
             ->addColumn('aksi', function ($query) {
                 return '
                 <div class="btn-group">
-                <button onclick="detailForm(`' . route('mahasiswa.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Detail</button>
+                <button onclick="detailForm(`' . route('mahasiswa.detail', $query->id) . '`)" class="btn btn-sm btn-info"><i class="fas fa-eye"></i> Detail</button>
                 </div>
                 ';
                 // <button onclick="editForm(`' . route('mahasiswa.show', $query->id) . '`)" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i> Edit</button>
@@ -86,14 +92,12 @@ class MahasiswaController extends Controller
      */
     public function detail($id)
     {
-        $mahasiswa  = Mahasiswa::with('user')->findOrFail($id);
+        $mahasiswa  = Mahasiswa::with('user','kelas_mahasiswa')->findOrFail($id);
 
         $mahasiswa->foto = Storage::url($mahasiswa->user->path_image ?? '');
         $mahasiswa->name = $mahasiswa->name;
         $mahasiswa->nim = $mahasiswa->nim;
         $mahasiswa->nomor_hp = $mahasiswa->nomor_hp;
-        $mahasiswa->email = $mahasiswa->user->email;
-        $mahasiswa->pass = $mahasiswa->user->pass;
 
         return response()->json(['data' => $mahasiswa]);
     }

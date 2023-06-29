@@ -4,8 +4,8 @@
 
 @section('breadcrumb')
     @parent
-    <li class="breadcrumb-item"><a href="{{ route('kelas.index') }}">Kelas</a></li>
-    <li class="breadcrumb-item active">Tambah Mahasiswa</li>
+    <li class="breadcrumb-item"><a href="{{ route('dosen.index') }}">Dosen</a></li>
+    <li class="breadcrumb-item active">Tambah Matakuliah</li>
 @endsection
 
 @section('content')
@@ -18,7 +18,7 @@
                         <img class="mb-3 img-circle" src="{{ asset('assets/icon/ruangkelasicon.png') }}"
                             alt="User profile picture" width="50%">
                     </div>
-                    <h3 class="profile-username text-center">Kelas {{ $kelas->name }}</h3>
+                    <h3 class="profile-username text-center">{{ $dosen->name }}</h3>
                     <p class="text-muted text-center">Dosen Wali </p>
                 </div>
             </div>
@@ -29,10 +29,12 @@
                 <div class="card-header p-2">
                     <ul class="nav nav-pills">
                         <li class="nav-item">
-                            <button onclick="addMahasiswaForm()" class="btn btn-outline-primary btn-sm" id="btnTambah"><i
-                                    class="fas fa-plus-circle"></i>
-                                Tambah
-                                Data</button>
+                            <div class="btn-group">
+                                <button onclick="addMatakuliahDosen()"
+                                    class="btn btn-outline-primary btn-sm" id="btnTambah"><i class="fas fa-plus-circle"></i>
+                                    Tambah
+                                    Data</button>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -40,12 +42,12 @@
                     <div class="tab-content">
                         <div class="row">
                             <div class="col-md-12">
-                                <x-table class="mahasiswa-table">
+                                <x-table class="dosen-table">
                                     <x-slot name="thead">
                                         <tr>
                                             <th>No</th>
-                                            <th>NIM</th>
-                                            <th>NAMA</th>
+                                            <th>MATAKULIAH</th>
+                                            <th>KELAS</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </x-slot>
@@ -58,7 +60,7 @@
             </div>
         </div>
     </div>
-    @includeIf('admin.kelas.form_mahasiswa')
+    @includeIf('admin.dosen.matakuliah.form')
 @endsection
 @include('include.datatable')
 
@@ -68,17 +70,43 @@
         let modal = '#modal-form';
         let modalDetail = '#modal-detail';
         let button = '#submitBtn';
-        let table, table2;
+        let table1, table2;
 
         $(document).ready(function() {
             $('#spinner-border').hide();
         });
 
-        table = $('.table-mahasiswa').DataTable({
+        table1 = $('.dosen-table').DataTable({
             processing: true,
             autoWidth: false,
             ajax: {
-                url: '{{ route('kelas.mahasiswa.data') }}',
+                url: '{{ route('dosen.get_matakuliah_dosen', $dosen->id) }}',
+            },
+            columns: [{
+                    data: 'DT_RowIndex',
+                    searchable: false,
+                    sortable: false
+                },
+                {
+                    data: 'matakuliah'
+                },
+                {
+                    data: 'kelas'
+                },
+                {
+                    data: 'aksi',
+                    searchable: false,
+                    sortable: false
+                },
+            ]
+        });
+
+
+        table2 = $('.matakuliah-table').DataTable({
+            processing: true,
+            autoWidth: false,
+            ajax: {
+                url: '{{ route('dosen.matakuliah.data', $dosen->id) }}',
             },
             columns: [{
                     data: 'DT_RowIndex',
@@ -91,36 +119,7 @@
                     sortable: false
                 },
                 {
-                    data: 'nim'
-                },
-                {
                     data: 'name'
-                },
-            ]
-        });
-
-        table2 = $('.mahasiswa-table').DataTable({
-            processing: true,
-            autoWidth: false,
-            ajax: {
-                url: '{{ route('kelas.get_kelas_mahasiswa', $kelas->id) }}',
-            },
-            columns: [{
-                    data: 'DT_RowIndex',
-                    searchable: false,
-                    sortable: false
-                },
-
-                {
-                    data: 'nim'
-                },
-                {
-                    data: 'name'
-                },
-                 {
-                    data: 'aksi',
-                    searchable: false,
-                    sortable: false
                 },
             ]
         });
@@ -128,12 +127,12 @@
         $("#select_all").on('click', function() {
             var isChecked = $("#select_all").prop('checked');
 
-            $(".mahasiswa").prop('checked', isChecked);
+            $(".matakuliah").prop('checked', isChecked);
             $("#submitBtn").prop('disabled', !isChecked);
         });
 
         $('#btnTambah').on('click', function() {
-            let checkbox = $('#modal-form #table tbody .mahasiswa:checked');
+            let checkbox = $('#modal-form #table tbody .matakuliah:checked');
 
             if (checkbox.length > 0) {
                 $("#submitBtn").prop('disabled', false);
@@ -141,26 +140,26 @@
             $("#submitBtn").prop('disabled', true);
         })
 
-        $("#table tbody").on('click', '.mahasiswa', function() {
+        $("#table tbody").on('click', '.matakuliah', function() {
             if ($(this).prop('checked') != true) {
                 $("#select_all").prop('checked', false);
             }
 
-            let semua_checkbox = $("#table tbody .mahasiswa:checked")
+            let semua_checkbox = $("#table tbody .matakuliah:checked")
 
-            let mahasiswa = (semua_checkbox.length > 0)
+            let matakuliah = (semua_checkbox.length > 0)
 
-            $("#submitBtn").prop('disabled', !mahasiswa)
+            $("#submitBtn").prop('disabled', !matakuliah)
         })
 
-        function addMahasiswaForm(title = "Tambah Mahasiswa") {
+        function addMatakuliahDosen(title = "Tambah Matakuliah Dosen") {
             $(modal).modal('show');
             $(`${modal} .modal-title`).text(title);
             resetForm(`${modal} form`);
         }
 
-        function submitForm(url, kelasId) {
-
+        function submitForm(url, dosenId) {
+            
             $('#spinner-border').show();
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
@@ -171,7 +170,7 @@
             })
             swalWithBootstrapButtons.fire({
                 title: 'Apakah anda yakin?',
-                text: 'Anda akan menginputkan mahasiswa terpilih.',
+                text: 'Anda akan menginputkan matakuliah terpilih.',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -181,7 +180,7 @@
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    let checkbox_terpilih = $('#modal-form #table tbody .mahasiswa:checked')
+                    let checkbox_terpilih = $('#modal-form #table tbody .matakuliah:checked')
                     let semua_id = []
 
                     $.each(checkbox_terpilih, function(index, elm) {
@@ -194,8 +193,8 @@
                         type: "post",
                         url: url,
                         data: {
-                            'mahasiswa_id': semua_id,
-                            'kelas_id': kelasId
+                            'matakuliah_id': semua_id,
+                            'dosen_id': dosenId
                         },
                         dataType: "json",
                         success: function(response) {
@@ -211,7 +210,8 @@
                             $(modal).modal('hide');
                             $(button).prop('disabled', false);
                             $('#spinner-border').hide();
-                            table.ajax.reload();
+
+                            table1.ajax.reload();
                             table2.ajax.reload();
                         },
                         error: function(xhr, status, error) {
@@ -227,7 +227,7 @@
                             });
 
                             // Refresh tabel atau lakukan operasi lain yang diperlukan
-                            table.ajax.reload();
+                            table1.ajax.reload();
                             table2.ajax.reload();
 
                         }
@@ -236,7 +236,7 @@
             });
         }
 
-        function deleteMahasiswa(url) {
+        function deleteMatakuliah(url) {
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -246,7 +246,7 @@
             })
             swalWithBootstrapButtons.fire({
                 title: 'Apakah anda yakin?',
-                text: 'Anda akan menghapus mahasiswa terpilih.',
+                text: 'Anda akan menghapus matakuliah terpilih.',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -271,7 +271,7 @@
                                 })
                             }
                             table2.ajax.reload();
-                            table.ajax.reload();
+                            table1.ajax.reload();
                         },
                         error: function(xhr, status, error) {
                             // Menampilkan pesan error
@@ -284,12 +284,12 @@
 
                             // Refresh tabel atau lakukan operasi lain yang diperlukan
                             table2.ajax.reload();
-                            table.ajax.reload();
+                            table1.ajax.reload();
 
                         }
                     });
                 }
             });
-          }
+        }
     </script>
 @endpush

@@ -50,6 +50,11 @@ Route::group([
         Route::get('dosen/data', [DosenController::class, 'data'])->name('dosen.data');
         Route::resource('dosen', DosenController::class)->except('create', 'edit');
         Route::get('dosen/{dosen}/detail', [DosenController::class, 'detail'])->name('dosen.detail');
+        Route::get('dosen/{dosen_id}/matakuliah', [DosenController::class, 'dosenMatakuliah'])->name('dosen.matakuliah.index');
+        Route::get('dosen/{dosen}/matakuliah/data', [DosenController::class, 'matakuliahData'])->name('dosen.matakuliah.data');
+        Route::post('dosen/matakuliah/store', [DosenController::class, 'dosenMatakuliahStore'])->name('dosen.matakuliah.store');
+        Route::get('dosen/{dosen_id}/get_matakuliah_dosen', [DosenController::class, 'getDosenMatakuliah'])->name('dosen.get_matakuliah_dosen');
+        Route::delete('dosen/matakuliah/{matakuliah_id}/destroy', [DosenController::class, 'matakuliahDestroy'])->name('dosen.matakuliah_destroy');
 
         //route kelas
         Route::get('ruang/data', [RuangController::class, 'data'])->name('ruang.data');
@@ -60,11 +65,11 @@ Route::group([
         Route::get('kelas/data', [KelasController::class, 'data'])->name('kelas.data');
         Route::resource('kelas', KelasController::class)->except('create', 'edit');
         Route::get('kelas/{kelas}/detail', [KelasController::class, 'detail'])->name('kelas.detail');
-        Route::get('kelas/mahasiswa/data',[KelasController::class, 'mahasiswaData'])->name('kelas.mahasiswa.data');
-        Route::get('kelas/{kelas_id}/mahasiswa',[KelasController::class, 'createFormMahasiswa'])->name('kelas.form_mahasiswa');
-        Route::post('kelas/add_mahasiswa',[KelasController::class, 'mahasiswaStore'])->name('kelas.mahasiswa.store');
-        Route::get('kelas/{kelas_id}/get_kelas_mahasiswa',[KelasController::class, 'getKelasMahasiswa'])->name('kelas.get_kelas_mahasiswa');
-        Route::delete('kelas/mahasiswa/{mahasiswa_id}/destroy',[KelasController::class, 'mahasiswaDestroy'])->name('kelas.mahasiswa_destroy');
+        Route::get('kelas/mahasiswa/data', [KelasController::class, 'mahasiswaData'])->name('kelas.mahasiswa.data');
+        Route::get('kelas/{kelas_id}/mahasiswa', [KelasController::class, 'createFormMahasiswa'])->name('kelas.form_mahasiswa');
+        Route::post('kelas/add_mahasiswa', [KelasController::class, 'mahasiswaStore'])->name('kelas.mahasiswa.store');
+        Route::get('kelas/{kelas_id}/get_kelas_mahasiswa', [KelasController::class, 'getKelasMahasiswa'])->name('kelas.get_kelas_mahasiswa');
+        Route::delete('kelas/mahasiswa/{mahasiswa_id}/destroy', [KelasController::class, 'mahasiswaDestroy'])->name('kelas.mahasiswa_destroy');
 
         //Route Matakuliah
         Route::get('matakuliah/data', [MatakuliahController::class, 'data'])->name('matakuliah.data');

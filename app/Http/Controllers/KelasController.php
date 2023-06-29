@@ -131,7 +131,7 @@ class KelasController extends Controller
      */
     public function createFormMahasiswa(Request $request, $kelasId)
     {
-        $kelas = Kelas::with('kelas_mahasiswa')->findOrfail($kelasId);
+        $kelas = Kelas::withCount('kelas_mahasiswa')->findOrfail($kelasId);
 
         return view('admin.kelas.add_mahasiswa', compact('kelas'));
     }
@@ -149,7 +149,7 @@ class KelasController extends Controller
             ->addIndexColumn()
             ->addColumn('aksi', function ($query) {
                 return '
-                   <button onclick="deleteMahasiswa(`' . route('kelas.mahasiswa_destroy', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-trash"></i> Delete</button>
+                   <button onclick="deleteMahasiswa(`' . route('kelas.mahasiswa_destroy', $query->id) . '`)" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> Delete</button>
                 ';
             })
             ->escapeColumns([])

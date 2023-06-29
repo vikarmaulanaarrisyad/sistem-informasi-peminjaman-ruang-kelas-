@@ -36,7 +36,7 @@ class User extends Authenticatable
         'remember_token',
         'two_factor_recovery_codes',
         'two_factor_secret',
-        'pass',
+        // 'pass',
         'profile_photo_path',
         'two_factor_confirmed_at',
         'profile_photo_url',

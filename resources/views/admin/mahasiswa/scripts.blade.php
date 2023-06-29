@@ -86,13 +86,13 @@
                     $(modalDetail).modal('show');
                     $(`${modalDetail} .modal-title`).text(title);
 
-                    $('.foto').attr('src',response.data.foto)
+                    $('.foto').attr('src', response.data.foto)
                     $('.name').text(response.data.name)
-                    $('.email').text(response.data.email)
-                    $('.password').text(response.data.pass)
-                    $('.kelas').text(response.data.kelas)
+                    $('.email').text(response.data.user.email)
+                    $('.password').text(response.data.user.pass)
                     $('.nohp').text(response.data.nomor_hp)
                     $('.nim').text(response.data.nim)
+                    $('.kelas').text(response.data.kelas_mahasiswa[0].name)
                 })
 
         }
@@ -191,14 +191,5 @@
             })
         }
 
-        function importForm(url, title = 'Import Petugas') {
-            $(modal2).modal('show');
-            $(`${modal2} .modal-title`).text(title);
-            $(`${modal2} form`).attr('action', url);
-            $(`${modal2} [name=_method]`).val('POST');
-            $('#spinner-border').hide();
-            $(button).prop('disabled', false);
-            resetForm(`${modal2} form`);
-        }
     </script>
 @endpush
