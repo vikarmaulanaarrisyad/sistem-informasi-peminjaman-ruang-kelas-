@@ -257,5 +257,9 @@
                 false);
             html5QrcodeScanner.render(onScanSuccess, onScanFailure);
         }
+
+        function createForm() {
+            window.location.href = '{{ route('jadwal.create') }}';
+         }
     </script>
 @endpush

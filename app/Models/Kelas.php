@@ -13,4 +13,9 @@ class Kelas extends Model
     {
         return $this->belongsToMany(Mahasiswa::class, 'kelas_mahasiswa')->withTimestamps();
     }
+
+    public function kelas_matakuliah()
+    {
+        return $this->belongsToMany(Matakuliah::class, 'kelas_matakuliah')->withTimestamps();
+    }
 }

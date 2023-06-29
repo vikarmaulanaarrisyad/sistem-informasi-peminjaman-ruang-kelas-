@@ -61,25 +61,42 @@ Route::group([
         Route::resource('ruang', RuangController::class)->except('create', 'edit');
         Route::get('ruang/{ruang}/detail', [RuangController::class, 'detail'])->name('ruang.detail');
 
-        //route kelas
+        /* ROUTE KELAS */
         Route::get('kelas/data', [KelasController::class, 'data'])->name('kelas.data');
         Route::resource('kelas', KelasController::class)->except('create', 'edit');
         Route::get('kelas/{kelas}/detail', [KelasController::class, 'detail'])->name('kelas.detail');
+
+        //route kelas mahasiswa
         Route::get('kelas/mahasiswa/data', [KelasController::class, 'mahasiswaData'])->name('kelas.mahasiswa.data');
         Route::get('kelas/{kelas_id}/mahasiswa', [KelasController::class, 'createFormMahasiswa'])->name('kelas.form_mahasiswa');
         Route::post('kelas/add_mahasiswa', [KelasController::class, 'mahasiswaStore'])->name('kelas.mahasiswa.store');
         Route::get('kelas/{kelas_id}/get_kelas_mahasiswa', [KelasController::class, 'getKelasMahasiswa'])->name('kelas.get_kelas_mahasiswa');
         Route::delete('kelas/mahasiswa/{mahasiswa_id}/destroy', [KelasController::class, 'mahasiswaDestroy'])->name('kelas.mahasiswa_destroy');
 
+        //route kelas matakuliah
+        Route::get('kelas/matakuliah/data', [KelasController::class, 'matakuliahData'])->name('kelas.matakuliah.data');
+        Route::get('kelas/{kelas_id}/matakuliah', [KelasController::class, 'kelasMatakuliahIndex'])->name('kelas.matakuliah.index');
+        Route::post('kelas/add_matakuliah', [KelasController::class, 'matakuliahStore'])->name('kelas.matakuliah.store');
+        Route::get('kelas/{kelas_id}/get_kelas_matakuliah', [KelasController::class, 'getKelasmatakuliah'])->name('kelas.get_kelas_matakuliah');
+        Route::delete('kelas/matakuliah/{matakuliah_id}/destroy', [KelasController::class, 'matakuliahDestroy'])->name('kelas.matakuliah_destroy');
+
+
+        /* END ROUTE KELAS */
+
         //Route Matakuliah
         Route::get('matakuliah/data', [MatakuliahController::class, 'data'])->name('matakuliah.data');
         Route::resource('matakuliah', MatakuliahController::class)->except('create', 'edit');
         Route::get('matakuliah/{matakuliah}/detail', [MatakuliahController::class, 'detail'])->name('matakuliah.detail');
 
-        //Route Jadwal
+        /* ROUTE JADWAL */
+
         Route::get('jadwal/data', [JadwalController::class, 'data'])->name('jadwal.data');
-        Route::resource('jadwal', JadwalController::class)->except('create', 'edit');
+        Route::resource('jadwal', JadwalController::class)->except('edit');
         Route::get('jadwal/{jadwal}/detail', [JadwalController::class, 'detail'])->name('jadwal.detail');
+
+        Route::post('jadwal/dosen/data',[JadwalController::class,'getDataMatakuliah'])->name('jadwal.dosen.data');
+
+        /* END ROUTE JADWAL */
 
         //Route peminjaman
         Route::get('peminjaman/data', [PeminjamanController::class, 'data'])->name('peminjaman.data');

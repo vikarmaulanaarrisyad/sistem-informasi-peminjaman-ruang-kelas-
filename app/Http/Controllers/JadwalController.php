@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dosen;
 use App\Models\Jadwal;
 use App\Models\Kelas;
 use App\Models\Matakuliah;
@@ -56,10 +57,10 @@ class JadwalController extends Controller
             })
             ->addColumn('aksi', function ($query) {
                 if ($query->jadwal_id > 0) {
-                // // Kode yang akan dijalankan jika jadwal_id kosong (NULL)
-                // // Misalnya, tambahkan logika alternatif atau kembalikan respons yang sesuai
-                // return 'Kosong';
-                return '
+                    // // Kode yang akan dijalankan jika jadwal_id kosong (NULL)
+                    // // Misalnya, tambahkan logika alternatif atau kembalikan respons yang sesuai
+                    // return 'Kosong';
+                    return '
                     <div class="btn-group">
                         <button onclick="detailForm(`' . route('jadwal.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
                     </div>
@@ -67,9 +68,9 @@ class JadwalController extends Controller
                 } else {
                     foreach ($query->peminjaman as $pinjam) {
                         if ($pinjam->jadwal_id == $query->id && $pinjam->status == "pinjam") {
-                        // Kode yang akan dijalankan jika jadwal_id terisi dan kondisi terpenuhi
-                        // Misalnya, tambahkan logika tambahan atau kembalikan respons yang sesuai
-                        return '
+                            // Kode yang akan dijalankan jika jadwal_id terisi dan kondisi terpenuhi
+                            // Misalnya, tambahkan logika tambahan atau kembalikan respons yang sesuai
+                            return '
                             <div class="btn-group">
                                 <button disabled class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
                             </div>
@@ -82,13 +83,12 @@ class JadwalController extends Controller
                         ';
                         }
                     }
-                return '
+                    return '
                     <div class="btn-group">
                         <button onclick="detailForm(`' . route('jadwal.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
                     </div>
                 ';
                 }
-
             })
             ->rawColumns(['aksi'])
             ->escapeColumns([])
@@ -101,13 +101,23 @@ class JadwalController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'kelas_id' => 'required',
+            'dosen_id' => 'required',
             'matakuliah_id' => 'required',
+            'kelas_id' => 'required',
+            'ruang_id' => 'required',
+            'waktu_mulai' => 'required|date_format:H:i',
+            'waktu_selesai' => 'required|date_format:H:i',
+            'hari' => 'required',
         ];
 
         $message = [
             'kelas_id.required' => 'Kelas wajib diisi.',
             'matakuliah_id.required' => 'Matakuliah wajib diisi.',
+            'dosen_id.required' => 'Dosen wajib diisi.',
+            'ruang_id.required' => 'Dosen wajib diisi.',
+            'waktu_mulai.required' => 'Waktu mulai wajib diisi.',
+            'waktu_selesai.required' => 'Waktu selesai wajib diisi.',
+            'hari.required' => 'Hari wajib diisi.',
         ];
 
         $validator = Validator::make($request->all(), $rules, $message);
@@ -116,17 +126,36 @@ class JadwalController extends Controller
             return response()->json(['errors' => $validator->errors(), 'message' => 'Silakan periksa kembali isian Anda dan coba kembali.'], 422);
         }
 
-        $data = [
-            'kelas_id' => $request->kelas_id,
-            'matakuliah_id' => $request->matakuliah_id,
-            'ruang_id' => $request->ruang_id,
-            'waktu_mulai' => $request->waktu_mulai,
-            'waktu_selesai' => $request->waktu_selesai,
-        ];
+        foreach ($request->hari as $hari) {
+            $data = [
+                'dosen_id' => $request->dosen_id,
+                'kelas_id' => $request->kelas_id,
+                'matakuliah_id' => $request->matakuliah_id,
+                'ruang_id' => $request->ruang_id,
+                'waktu_mulai' => $request->waktu_mulai,
+                'waktu_selesai' => $request->waktu_selesai,
+                'hari' => $hari,
+            ];
 
-        $result = Jadwal::create($data);
+            $result = Jadwal::create($data);
+        }
 
         return response()->json(['data' => $result, 'message' => 'Data berhasil disimpan.']);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function create()
+    {
+        $namaHari = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+
+        $daftarKelas = Kelas::all();
+        $daftarMatkul = Matakuliah::all();
+        $daftarRuang = Ruang::all();
+        $daftarDosen = Dosen::all();
+
+        return view('admin.jadwal.create', compact('namaHari', 'daftarKelas', 'daftarMatkul', 'daftarRuang', 'daftarDosen'));
     }
 
     /**
@@ -191,5 +220,15 @@ class JadwalController extends Controller
     public function destroy(Jadwal $jadwal)
     {
         //
+    }
+
+    /**
+     * Get Data Matakuliah by Dosen
+     */
+    public function getDataMatakuliah(Request $request)
+    {
+        $matakuliahByDosen = Dosen::with('matakuliah')->findOrfail($request->dosen_id);
+
+        return response()->json(['data' => $matakuliahByDosen]);
     }
 }

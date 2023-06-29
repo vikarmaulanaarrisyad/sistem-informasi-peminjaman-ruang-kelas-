@@ -70,6 +70,7 @@ function loopErrors(errors) {
         $(`[name=${error}]`).addClass("is-invalid");
 
         if ($(`[name=${error}]`).hasClass("select2")) {
+            $(`[name=${error}]`).addClass("is-invalid");
             $(
                 `<span class="error invalid-feedback">${errors[error][0]}</span>`
             ).insertAfter($(`[name=${error}]`).next());

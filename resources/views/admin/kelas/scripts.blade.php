@@ -196,5 +196,24 @@
                 },
             });
         }
+
+        function addMatakuliahForm(kelasId) {
+            var url = "{{ route('kelas.form_mahasiswa', ['kelas_id' => ':kelas_id']) }}";
+            url = url.replace(':kelas_id', kelasId);
+
+            window.location.href = url;
+
+            $.ajax({
+                type: "GET",
+                url: url,
+                data: {
+                    'kelas_id': kelasId,
+                },
+                dataType: "json",
+                success: function(response) {
+                    window.location.href = url;
+                },
+            });
+        }
     </script>
 @endpush

@@ -14,9 +14,11 @@
         <div class="col-md-12 col-lg-12">
             <x-card>
                 <x-slot name="header">
-                  {{-- <button onclick="addForm(`{{ route('jadwal.store') }}`)" class="btn btn-outline-primary btn-sm"><i
-                            class="fas fa-plus-circle"></i> Tambah Data</button> --}}
-                            <h5>Jadwal Matakuliah Hari Ini</h5>
+                    <div class="d-flex">
+                        <button onclick="createForm()"
+                            class="btn btn-outline-primary btn-sm float-right"><i class="fas fa-plus-circle"></i> Tambah
+                            Data</button>
+                    </div>
                 </x-slot>
 
                 <x-table>
