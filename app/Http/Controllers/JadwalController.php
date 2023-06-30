@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Dosen;
 use App\Models\Jadwal;
 use App\Models\Kelas;
+use App\Models\Mahasiswa;
 use App\Models\Matakuliah;
 use App\Models\Peminjaman;
 use App\Models\Ruang;
@@ -31,7 +32,10 @@ class JadwalController extends Controller
      */
     public function data(Request $request)
     {
+
+
         $query = Jadwal::hariIni()->with('kelas', 'peminjaman');
+
 
         return datatables($query)
             ->addIndexColumn()

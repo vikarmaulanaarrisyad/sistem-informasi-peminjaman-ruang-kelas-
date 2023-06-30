@@ -1,17 +1,22 @@
  <aside class="main-sidebar sidebar-light-primary elevation-4">
      <!-- Brand Logo -->
      <a href="{{ route('dashboard') }}" class="brand-link bg-primary bg-light">
-         <img src="{{ Storage::url($setting->logo_aplikasi) }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-             style="opacity: .8">
-         <span class="brand-text font-weight-light">{{  $setting->nama_singkatan ?? config('app.name') }}</span>
+
+         <img src="{{ Storage::url($setting->logo_aplikasi) }}" alt="AdminLTE Logo"
+             class="brand-image img-circle elevation-3" style="opacity: .8">
+         <span class="brand-text font-weight-light">{{ $setting->nama_singkatan ?? config('app.name') }}</span>
      </a>
 
      <!-- Sidebar -->
      <div class="sidebar">
          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
              <div class="image">
-                 <img src="{{ Storage::url(auth()->user()->path_image ?? '') }}" class="img-circle elevation-2"
-                     alt="User Image">
+                 @if (auth()->user()->path_image == 'default.jpg')
+                     <img src="{{ asset('assets/images/not.png') }}" class="img-circle elevation-2" alt="User Image">
+                 @else
+                     <img src="{{ Storage::url(auth()->user()->path_image ?? '') }}" class="img-circle elevation-2"
+                         alt="User Image">
+                 @endif
              </div>
              <div class="info">
                  <a href="javascript:void(0)" class="d-block">{{ auth()->user()->name }}</a>
@@ -41,7 +46,8 @@
 
                  @if (Auth()->user()->hasRole('admin'))
                      <li class="nav-item">
-                         <a href="{{ route('mahasiswa.index') }}" class="nav-link {{ request()->is('admin/mahasiswa*') ? 'active' : '' }}">
+                         <a href="{{ route('mahasiswa.index') }}"
+                             class="nav-link {{ request()->is('admin/mahasiswa*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-users"></i>
                              <p>
                                  Data Mahasiswa
@@ -49,7 +55,8 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="{{ route('dosen.index') }}" class="nav-link {{ request()->is('admin/dosen*') ? 'active' : '' }}">
+                         <a href="{{ route('dosen.index') }}"
+                             class="nav-link {{ request()->is('admin/dosen*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-user"></i>
                              <p>
                                  Data Dosen
@@ -57,7 +64,8 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="{{route('ruang.index')}}" class="nav-link {{ request()->is('admin/ruang*') ? 'active' : '' }}">
+                         <a href="{{ route('ruang.index') }}"
+                             class="nav-link {{ request()->is('admin/ruang*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-university"></i>
                              <p>
                                  Data Ruang
@@ -65,7 +73,8 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="{{route('kelas.index')}}" class="nav-link {{ request()->is('admin/kelas*') ? 'active' : '' }}">
+                         <a href="{{ route('kelas.index') }}"
+                             class="nav-link {{ request()->is('admin/kelas*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-graduation-cap"></i>
                              <p>
                                  Data Kelas
@@ -73,7 +82,8 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="{{ route('matakuliah.index') }}" class="nav-link {{ request()->is('admin/matakuliah*') ? 'active' : '' }}">
+                         <a href="{{ route('matakuliah.index') }}"
+                             class="nav-link {{ request()->is('admin/matakuliah*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-book"></i>
                              <p>
                                  Data Mata Kuliah
@@ -81,7 +91,8 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="{{ route('jadwal.index') }}" class="nav-link {{ request()->is('admin/jadwal*') ? 'active' : '' }}">
+                         <a href="{{ route('jadwal.index') }}"
+                             class="nav-link {{ request()->is('admin/jadwal*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-calendar-alt"></i>
                              <p>
                                  Data Jadwal
@@ -89,7 +100,8 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="{{ route('perlengkapan.index') }}" class="nav-link {{ request()->is('admin/perlengkapan*') ? 'active' : '' }}">
+                         <a href="{{ route('perlengkapan.index') }}"
+                             class="nav-link {{ request()->is('admin/perlengkapan*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-wrench"></i>
                              <p>
                                  Data Perlengkapan
@@ -98,7 +110,8 @@
                      </li>
                      <li class="nav-header">TRANSAKSI</li>
                      <li class="nav-item">
-                         <a href="{{ route('peminjaman.index') }}" class="nav-link {{ request()->is('admin/peminjaman*') ? 'active' : '' }}">
+                         <a href="{{ route('peminjaman.index') }}"
+                             class="nav-link {{ request()->is('admin/peminjaman*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-sign-in-alt"></i>
                              <p>
                                  Peminjaman
@@ -106,7 +119,8 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="{{ route('pengembalian.index') }}" class="nav-link {{ request()->is('admin/pengembalian*') ? 'active' : '' }}">
+                         <a href="{{ route('pengembalian.index') }}"
+                             class="nav-link {{ request()->is('admin/pengembalian*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-sign-in-alt"></i>
                              <p>
                                  Pengembalian
@@ -118,7 +132,8 @@
                  @if (auth()->user()->hasRole('admin'))
                      <li class="nav-header">PENGATURAN APLIKASI</li>
                      <li class="nav-item">
-                         <a href="{{ route('setting.index') }}" class="nav-link {{ request()->is('admin/setting') ? 'active' : '' }}">
+                         <a href="{{ route('setting.index') }}"
+                             class="nav-link {{ request()->is('admin/setting') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-cogs"></i>
                              <p>
                                  Setting
@@ -127,10 +142,10 @@
                      </li>
                  @else
                      <li class="nav-item">
-                         <a href="#" class="nav-link {{ request()->is('karyawan/scan') ? 'active' : '' }}">
-                             <i class="nav-icon fas fa-qrcode"></i>
+                         <a href="{{ route('mahasiswa.jadwal.index') }}" class="nav-link {{ request()->is('mahasiswa/jadwal') ? 'active' : '' }}">
+                             <i class="nav-icon fas fa-calendar-alt"></i>
                              <p>
-                                 SCAN QR
+                                 Data Jadwal
                              </p>
                          </a>
                      </li>

@@ -17,8 +17,14 @@
          <!-- Messages Dropdown Menu -->
          <li class="nav-item dropdown mr-3">
              <a class="nav-link" data-toggle="dropdown" href="javascript:void(0);">
-                 <img src="{{ Storage::url($setting->logo_aplikasi) }}" class="img-circle" alt="User Image"
-                     style="width: 29px ">
+                 @if (auth()->user()->path_image == 'default.jpg')
+                  <img src="{{ asset('assets/images/not.png') }}" class="img-circle" alt="User Image"
+                         style="width: 29px ">
+                 @else
+                     <img src="{{ Storage::url(auth()->user()->path_image) }}" class="img-circle" alt="User Image"
+                         style="width: 29px ">
+                 @endif
+
                  {{ auth()->user()->name }}
              </a>
              <div class="dropdown-menu dropdown-menu-md dropdown-menu-right">

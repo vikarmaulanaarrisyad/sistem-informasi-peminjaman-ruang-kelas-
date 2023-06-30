@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 
 class Jadwal extends Model
 {
@@ -38,5 +39,15 @@ class Jadwal extends Model
         $hari = format_hari(date("D"));
 
         return $this->where('hari', $hari);
+    }
+
+    //scope binding untuk mencari Kelas
+    public function scopeKelas()
+    {
+        $userId = Auth::id();
+        $mahasiswa = Mahasiswa::where('user_id', $userId)->first();
+        $kelasMahasiswa = $mahasiswa->kelas_mahasiswa()->first();
+
+        return $this->where('kelas_id', $kelasMahasiswa->id);
     }
 }

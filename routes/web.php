@@ -4,12 +4,14 @@ use App\Http\Controllers\{
     DashboardController,
     DosenController,
     JadwalController,
+    JadwalMahasiswaController,
     KelasController,
     MahasiswaController,
     MatakuliahController,
     PeminjamanController,
     PengembalianController,
     PerlengkapanController,
+    QrCodeController,
     RuangController,
     SettingController,
     UserProfileInformationController
@@ -38,6 +40,7 @@ Route::group([
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/user/profile/password', [UserProfileInformationController::class, 'showPassword'])
         ->name('profile.show.password');
+
 
     Route::group([
         'middleware' => 'role:admin',
@@ -81,8 +84,6 @@ Route::group([
         Route::post('kelas/add_matakuliah', [KelasController::class, 'matakuliahStore'])->name('kelas.matakuliah.store');
         Route::get('kelas/{kelas_id}/get_kelas_matakuliah', [KelasController::class, 'getKelasmatakuliah'])->name('kelas.get_kelas_matakuliah');
         Route::delete('kelas/matakuliah/{matakuliah_id}/destroy', [KelasController::class, 'matakuliahDestroy'])->name('kelas.matakuliah_destroy');
-
-
         /* END ROUTE KELAS */
 
         //Route Matakuliah
@@ -111,7 +112,7 @@ Route::group([
 
         Route::get('pengembalian/data', [PengembalianController::class, 'data'])->name('pengembalian.data');
         Route::post('pengembalian/validasi', [PengembalianController::class, 'validasi'])->name('pengembalian.validasi');
-        Route::resource('pengembalian', PengembalianController::class)->except('edit','create');
+        Route::resource('pengembalian', PengembalianController::class)->except('edit', 'create');
 
         Route::resource('setting', SettingController::class);
     });
@@ -120,6 +121,8 @@ Route::group([
         'prefix' => 'mahasiswa'
     ], function () {
         //Scanner
-
+        Route::get('/jadwal', [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
+        Route::get('/jadwal/data', [JadwalMahasiswaController::class, 'data'])->name('mahasiswa.jadwal.data');
+        Route::get('/qrcode/download/{nim}', [QrCodeController::class,'download'])->name('qrcode.download');
     });
 });

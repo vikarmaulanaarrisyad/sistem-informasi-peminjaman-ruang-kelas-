@@ -15,9 +15,12 @@
             <x-card>
                 <x-slot name="header">
                     <div class="d-flex">
-                        <button onclick="createForm()"
-                            class="btn btn-outline-primary btn-sm float-right"><i class="fas fa-plus-circle"></i> Tambah
-                            Data</button>
+                        @if (auth()->user()->hasRole('admin'))
+                            <button onclick="createForm()" class="btn btn-outline-primary btn-sm float-right"><i
+                                    class="fas fa-plus-circle"></i> Tambah
+                                Data</button>
+                        @endif
+
                     </div>
                 </x-slot>
 

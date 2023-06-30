@@ -7,6 +7,7 @@ use App\Models\Kelas;
 use App\Models\Mahasiswa;
 use App\Models\Ruang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -29,7 +30,15 @@ class DashboardController extends Controller
                 'totalRuang',
             ]));
         } else {
-            return view('karyawan.dashboard.index');
+
+            $userId = Auth::id();
+
+            $mahasiswa = Mahasiswa::where('user_id', $userId)->first();
+
+            return view('mahasiswa.dashboard.index', compact('mahasiswa'));
         }
     }
+
+
+
 }

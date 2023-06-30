@@ -50,7 +50,7 @@
                                             <input type="checkbox" class="custom-control-input" id="customCheck1">
                                             <label for="customCheck1" class="custom-control-label text-muted">show password</label>
                                         </div>
-                                        <a href="#" class="small mt-1 text-muted">Lupa Password?</a>
+                                        <a href="{{ route('register') }}" class="small mt-1 text-muted">Register Akun?</a>
                                     </div>
 
                                     <div>

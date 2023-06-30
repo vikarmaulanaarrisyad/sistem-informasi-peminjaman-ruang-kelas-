@@ -48,11 +48,11 @@
                     data: 'ruang'
                 },
 
-                {
-                    data: 'aksi',
-                    sortable: false,
-                    searchable: false
-                },
+                    {
+                        data: 'aksi',
+                        sortable: false,
+                        searchable: false
+                    },
             ]
         });
 

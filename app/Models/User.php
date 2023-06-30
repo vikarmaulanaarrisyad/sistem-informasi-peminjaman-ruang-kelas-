@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Builder;
 
 class User extends Authenticatable
 {
@@ -69,5 +70,18 @@ class User extends Authenticatable
     public function hasRole($role)
     {
         return $this->role->name == $role;
+    }
+
+    public function mahasiswa()
+    {
+        return $this->hasOne(Mahasiswa::class, 'id', 'user_id');
+    }
+
+    /**
+     * Scope a query to only include active users.
+     */
+    public function scopeMahasiswa(Builder $query): void
+    {
+        $query->where('user_id', 2);
     }
 }
