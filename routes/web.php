@@ -11,6 +11,7 @@ use App\Http\Controllers\{
     PengembalianController,
     PerlengkapanController,
     RuangController,
+    SettingController,
     UserProfileInformationController
 };
 use Illuminate\Support\Facades\Route;
@@ -111,6 +112,8 @@ Route::group([
         Route::get('pengembalian/data', [PengembalianController::class, 'data'])->name('pengembalian.data');
         Route::post('pengembalian/validasi', [PengembalianController::class, 'validasi'])->name('pengembalian.validasi');
         Route::resource('pengembalian', PengembalianController::class)->except('edit','create');
+
+        Route::resource('setting', SettingController::class);
     });
     Route::group([
         'middleware' => 'role:mahasiswa',

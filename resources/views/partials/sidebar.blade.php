@@ -10,7 +10,7 @@
      <div class="sidebar">
          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
              <div class="image">
-                 <img src="{{ asset('assets/logo/logo.jpg') }}" class="img-circle elevation-2"
+                 <img src="{{ Storage::url(auth()->user()->path_image ?? '') }}" class="img-circle elevation-2"
                      alt="User Image">
              </div>
              <div class="info">
@@ -116,12 +116,12 @@
                  @endif
 
                  @if (auth()->user()->hasRole('admin'))
-                     <li class="nav-header">REPORT</li>
+                     <li class="nav-header">PENGATURAN APLIKASI</li>
                      <li class="nav-item">
-                         <a href="#" class="nav-link">
-                             <i class="nav-icon fas fa-file-pdf"></i>
+                         <a href="{{ route('setting.index') }}" class="nav-link {{ request()->is('admin/setting') ? 'active' : '' }}">
+                             <i class="nav-icon fas fa-cogs"></i>
                              <p>
-                                 Laporan
+                                 Setting
                              </p>
                          </a>
                      </li>

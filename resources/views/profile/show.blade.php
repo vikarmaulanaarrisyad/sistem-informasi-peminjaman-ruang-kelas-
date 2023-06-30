@@ -8,7 +8,6 @@
 @endsection
 
 @section('content')
-
     <form class="form-horizontal" method="POST" action="{{ route('user-profile-information.update') }}"
         enctype="multipart/form-data">
 
@@ -34,7 +33,7 @@
                                 <span class="invalid-feedback">{{ $message }}</span>
                             @enderror
                         </div>
-                        <p class="text-muted">File harus bertipe jpg, png, jpeg ukuran max 2MB</p>
+                        <p class="text-muted">File harus bertipe jpg, png, jpeg ukuran max 2MB. serta ukuran foto adalah 400x400</p>
 
                     </div>
                 </div>
@@ -52,9 +51,6 @@
                     <div class="card-body">
                         <div class="tab-content">
                             <div class="tab-pane active " id="settings">
-
-
-
                                 <div class="form-group row">
                                     <label for="inputName" class="col-sm-2 col-form-label">Name</label>
                                     <div class="col-sm-10">
