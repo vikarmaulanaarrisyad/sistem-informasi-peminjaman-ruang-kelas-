@@ -1,3 +1,11 @@
+@push('css')
+    <style>
+        button#html5-qrcode-button-camera-stop {
+            display: none !important;
+        }
+    </style>
+@endpush
+
 @push('scripts')
     <script>
         let modal = '#modal-form';

@@ -68,6 +68,10 @@ class PengembalianController extends Controller
     {
         $mahasiswa = Mahasiswa::where('nim', $request->nim)->first();
 
+        if (!$mahasiswa) {
+            return response()->json(['message' => 'Data tidak ditemukan dalam sistem'], 422);
+        }
+
         //cek apakah mahasiswa memiliki peminjaman ruangan
         $peminjaman = Peminjaman::where('mahasiswa_id', $mahasiswa->id)
             ->where('status', 'pinjam')->first();

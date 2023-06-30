@@ -22,7 +22,7 @@ class PeminjamanController extends Controller
      */
     public function data(Request $request)
     {
-        $query = Peminjaman::orderBy('created_at','DESC');
+        $query = Peminjaman::orderBy('created_at', 'DESC');
 
         return datatables($query)
             ->addIndexColumn()
@@ -71,9 +71,19 @@ class PeminjamanController extends Controller
             return response()->json(['message' => 'Data Mahasiswa tidak ditemukan dalam sistem.'], 422);
         }
 
+        if ($mahasiswa->kelas_mahasiswa->isEmpty()) {
+            return response()->json(['message' => 'Data Mahasiswa tidak ditemukan dalam kelas.'], 422);
+        }
+
+        if (!$mahasiswa->kelas_mahasiswa->where('kelas_id', $jadwal->kelas_id)) {
+            return response()->json(['message' => 'Data Mahasiswa tidak berada dalam kelas yang dipinjam.'], 422);
+        }
+
         if ($waktuSekarang < $jadwal->waktu_mulai) {
             return response()->json(['message' => 'Jadwal matakuliah belum dimulai.'], 422);
-        } else if ($waktuSekarang > $jadwal->waktu_selesai) {
+        }
+
+        if ($waktuSekarang > $jadwal->waktu_selesai) {
             return response()->json(['message' => 'Jadwal matakuliah sudah berakhir.'], 422);
         }
 
@@ -92,6 +102,7 @@ class PeminjamanController extends Controller
 
         return response()->json(['data' => $peminjaman, 'message' => 'Data berhasil disimpan.']);
     }
+
 
     /**
      * Display the specified resource.

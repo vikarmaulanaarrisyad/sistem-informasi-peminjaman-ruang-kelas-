@@ -100,7 +100,7 @@
                             showConfirmButton: false,
                             timer: 3000
                         }).then(() => {
-                            window.location.href = "/admin/pengembalian/" + nim;
+                            // window.location.href = "/admin/pengembalian/" + nim;
                             html5QrcodeScanner.render();
                             table1.ajax.reload();
                         });

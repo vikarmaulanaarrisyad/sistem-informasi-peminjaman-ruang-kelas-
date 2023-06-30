@@ -25,7 +25,10 @@
                 </div>
 
                 <x-slot name="footer">
-
+                    <div class="d-flex ">
+                        <i class="fas fa-info-circle mr-1" style="color: #17a2b8"></i>
+                        <span class="mr-5" style="color: #17a2b8; font-size: 0.85em">Jika QR Code tidak terdeteksi oleh sistem silahkan tambahkan manual NIM mahasiswa secara manual</span>
+                    </div>
                 </x-slot>
             </x-card>
         </div>
