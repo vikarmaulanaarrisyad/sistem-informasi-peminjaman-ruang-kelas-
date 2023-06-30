@@ -22,7 +22,7 @@ class PeminjamanController extends Controller
      */
     public function data(Request $request)
     {
-        $query = Peminjaman::all();
+        $query = Peminjaman::orderBy('created_at','DESC');
 
         return datatables($query)
             ->addIndexColumn()
@@ -42,7 +42,7 @@ class PeminjamanController extends Controller
                 return '-';
             })
             ->addColumn('status', function ($query) {
-                return '';
+                return '<span class="badge badge-' . $query->statusColor() . '">' . $query->statusText() . '</span>';
             })
             ->escapeColumns([])
             ->make(true);

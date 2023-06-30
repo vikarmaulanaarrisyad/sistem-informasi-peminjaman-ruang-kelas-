@@ -13,6 +13,11 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(User::class,'user_id','id');
     }
+    public function peminjaman()
+    {
+        return $this->belongsTo(Peminjaman::class,'mahasiswa_id','id');
+        // return $this->belongsTo(Peminjaman::class,'mahasiswa_id','id');
+    }
 
     public function kelas_mahasiswa ()
     {

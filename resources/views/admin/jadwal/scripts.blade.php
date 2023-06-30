@@ -69,6 +69,44 @@
                     $(button).prop('disabled', false);
                     resetForm(`${modal} form`);
                     loopForm(response.data);
+
+                    // Tambahkan opsi baru
+                    var kelasText = "Kelas " + response.data.kelas.name;
+                    var ruangText = "Ruang " + response.data.ruang.name;
+
+                    var kelas = new Option(kelasText, response.data.kelas.id, true, true);
+                    var matkul = new Option(response.data.matakuliah.name, response.data.matakuliah.id, true, true);
+                    var ruang = new Option(ruangText, response.data.ruang.id, true, true);
+
+
+                    $('#kelas_id').append(kelas).trigger('change');
+                    $('#matakuliah_id').append(matkul).trigger('change');
+                    $('#ruang_id').append(ruang).trigger('change');
+
+                    // Menambahkan atribut 'disabled'
+                    $('#kelas_id').prop('disabled', true);
+                    $('#matakuliah_id').prop('disabled', true);
+                    $('#dosen_id').prop('disabled', true);
+                    $('#ruang_id').prop('disabled', true);
+
+                    // Misalkan data dari database adalah array yang berisi nilai hari yang dipilih
+                    var databaseValues = response.data.hari;
+
+                    // Loop melalui setiap checkbox
+                    $('input[name="hari"]').each(function() {
+                        var checkboxValue = $(this).val();
+
+                        // Periksa apakah nilai checkbox cocok dengan nilai dari database
+                        if (databaseValues.includes(checkboxValue)) {
+                            $(this).prop('checked', true);
+                            $(this).prop('disabled', true);
+
+                        } else {
+                            $(this).prop('disabled', true);
+                        }
+                    });
+
+
                 })
                 .fail(errors => {
                     Swall.fire({
@@ -210,7 +248,7 @@
                             '_token': csrf_token
                         },
                         success: function(response) {
-                          Swal.fire({
+                            Swal.fire({
                                 icon: 'success',
                                 title: 'Berhasil',
                                 text: response.message,
@@ -260,6 +298,6 @@
 
         function createForm() {
             window.location.href = '{{ route('jadwal.create') }}';
-         }
+        }
     </script>
 @endpush

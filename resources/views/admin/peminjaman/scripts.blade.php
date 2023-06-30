@@ -28,19 +28,16 @@
                     data: 'mahasiswa'
                 },
                 {
+                    data: 'status'
+                },
+                {
                     data: 'mulai'
                 },
                 {
                     data: 'selesai'
                 },
-                {
-                    data: 'status'
-                },
-                {
-                    data: 'aksi',
-                    sortable: false,
-                    searchable: false
-                },
+
+
             ]
         });
 

@@ -21,8 +21,9 @@ class JadwalController extends Controller
         $dataKelas = Kelas::all();
         $dataMatakuliah = Matakuliah::all();
         $dataRuang = Ruang::all();
+        $daftarDosen = Dosen::all();
 
-        return view('admin.jadwal.index', compact('dataKelas', 'dataMatakuliah', 'dataRuang'));
+        return view('admin.jadwal.index', compact('dataKelas', 'dataMatakuliah', 'dataRuang', 'daftarDosen'));
     }
 
     /**
@@ -85,7 +86,8 @@ class JadwalController extends Controller
                     }
                     return '
                     <div class="btn-group">
-                        <button onclick="detailForm(`' . route('jadwal.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
+                    <button onclick="detailForm(`' . route('jadwal.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
+                    <button onclick="editForm(`' . route('jadwal.show', $query->id) . '`)" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt"></i> Edit</button>
                     </div>
                 ';
                 }
@@ -163,7 +165,8 @@ class JadwalController extends Controller
      */
     public function show($id)
     {
-        $jadwal = Jadwal::findOrfail($id);
+        $jadwal = Jadwal::with('dosen', 'ruang', 'matakuliah', 'kelas')->findOrfail($id);
+
 
         return response()->json(['data' => $jadwal]);
     }
@@ -186,13 +189,18 @@ class JadwalController extends Controller
         $jadwal = Jadwal::findOrfail($id);
 
         $rules = [
-            'kelas_id' => 'required',
-            'matakuliah_id' => 'required',
+            'waktu_mulai' => 'required|date_format:H:i',
+            'waktu_selesai' => 'required|date_format:H:i',
         ];
 
         $message = [
             'kelas_id.required' => 'Kelas wajib diisi.',
             'matakuliah_id.required' => 'Matakuliah wajib diisi.',
+            'dosen_id.required' => 'Dosen wajib diisi.',
+            'ruang_id.required' => 'Dosen wajib diisi.',
+            'waktu_mulai.required' => 'Waktu mulai wajib diisi.',
+            'waktu_selesai.required' => 'Waktu selesai wajib diisi.',
+            'hari.required' => 'Hari wajib diisi.',
         ];
 
         $validator = Validator::make($request->all(), $rules, $message);
@@ -202,9 +210,6 @@ class JadwalController extends Controller
         }
 
         $data = [
-            'kelas_id' => $request->kelas_id,
-            'matakuliah_id' => $request->matakuliah_id,
-            'ruang_id' => $request->ruang_id,
             'waktu_mulai' => $request->waktu_mulai,
             'waktu_selesai' => $request->waktu_selesai,
         ];

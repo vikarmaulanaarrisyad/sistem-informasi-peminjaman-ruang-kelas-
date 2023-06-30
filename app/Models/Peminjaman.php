@@ -18,4 +18,43 @@ class Peminjaman extends Model
     {
         return $this->belongsTo(Mahasiswa::class);
     }
+
+    public function statusText()
+    {
+        $text = '';
+
+        switch ($this->status) {
+            case 'pinjam':
+                $text = 'Belum dikembalikan';
+                break;
+            case 'kembali':
+                $text = 'Dikembalikan';
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
+        return $text;
+    }
+    public function statusColor()
+    {
+        $color = '';
+
+        switch ($this->status) {
+            case 'pinjam':
+                $color = 'danger';
+                break;
+            case 'kembali':
+                $color = 'warning';
+                break;
+
+            default:
+                # code...
+                break;
+        }
+
+        return $color;
+    }
 }

@@ -106,7 +106,7 @@
                          </a>
                      </li>
                      <li class="nav-item">
-                         <a href="#" class="nav-link {{ request()->is('admin/pengembalian*') ? 'active' : '' }}">
+                         <a href="{{ route('pengembalian.index') }}" class="nav-link {{ request()->is('admin/pengembalian*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-sign-in-alt"></i>
                              <p>
                                  Pengembalian

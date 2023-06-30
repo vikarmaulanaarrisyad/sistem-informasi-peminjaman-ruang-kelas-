@@ -42,4 +42,5 @@
     @includeIf('admin.jadwal.form_peminjaman')
 @endsection
 @include('include.datatable')
+@include('include.datepicker')
 @include('admin.jadwal.scripts')

@@ -24,10 +24,9 @@
                             <th>NO</th>
                             <th>JADWAL</th>
                             <th>NAMA MAHASISWA</th>
+                            <th>STATUS</th>
                             <th>MULAI</th>
                             <th>SELESAI</th>
-                            <th>STATUS</th>
-                            <th>AKSI</th>
                         </tr>
                     </x-slot>
                 </x-table>

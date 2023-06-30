@@ -8,6 +8,7 @@ use App\Http\Controllers\{
     MahasiswaController,
     MatakuliahController,
     PeminjamanController,
+    PengembalianController,
     PerlengkapanController,
     RuangController,
     UserProfileInformationController
@@ -94,7 +95,7 @@ Route::group([
         Route::resource('jadwal', JadwalController::class)->except('edit');
         Route::get('jadwal/{jadwal}/detail', [JadwalController::class, 'detail'])->name('jadwal.detail');
 
-        Route::post('jadwal/dosen/data',[JadwalController::class,'getDataMatakuliah'])->name('jadwal.dosen.data');
+        Route::post('jadwal/dosen/data', [JadwalController::class, 'getDataMatakuliah'])->name('jadwal.dosen.data');
 
         /* END ROUTE JADWAL */
 
@@ -106,6 +107,10 @@ Route::group([
         Route::get('perlengkapan/data', [PerlengkapanController::class, 'data'])->name('perlengkapan.data');
         Route::resource('perlengkapan', PerlengkapanController::class)->except('create', 'edit');
         Route::get('perlengkapan/{perlengkapan}/detail', [PerlengkapanController::class, 'detail'])->name('perlengkapan.detail');
+
+        Route::get('pengembalian/data', [PengembalianController::class, 'data'])->name('pengembalian.data');
+        Route::post('pengembalian/validasi', [PengembalianController::class, 'validasi'])->name('pengembalian.validasi');
+        Route::resource('pengembalian', PengembalianController::class)->except('edit','create');
     });
     Route::group([
         'middleware' => 'role:mahasiswa',
