@@ -15,9 +15,9 @@
                                 {{-- <a href="{{ url('/') }}">
                                     <img src="{{ asset('images/logo/pmb.png') }}" alt="" class="w-50 mb-4">
                                 </a> --}}
-                                <h4 class="login-heading text-bold text-center">SIRKO</h4>
+                                <h4 class="login-heading text-bold text-center">{{ $setting->nama_singkatan ?? config('app.name') }}</h4>
                                 <h4 class="login-heading text-bold text-center mb-4">Politeknik Harapan Bersama</h4>
-                                <p>Akses peminjaman ruang kelas mahasiswa dalam pembelajaran</p>
+                                <p>{{ $setting->diskripsi_aplikasi ?? '' }}</p>
                                 {{-- Form --}}
                                 <form action="{{ route('login') }}" method="post">
                                     @csrf
@@ -61,7 +61,7 @@
 
                                     <div class="text-center mt-3">
                                         <div class="text-muted">
-                                          SISTEM INFORMASI RUANG KELAS ONLINE POLITEKNIK HARAPAN BERSAMA
+                                          {{ $setting->nama_aplikasi ?? 'POLITEKNIK HARAPAN BERSAMA TEGAL' }}
                                         </div>
                                     </div>
                                 </form>

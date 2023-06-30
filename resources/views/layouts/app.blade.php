@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name') }} - @yield('title')</title>
+    <title>{{ $setting->nama_singkatan ?? $setting->nama_aplikasi ?? config('app.name') }} - @yield('title')</title>
 
     <link rel="icon" href="{{ asset('assets/logo/logo.jpg') }}" type="image/*">
 

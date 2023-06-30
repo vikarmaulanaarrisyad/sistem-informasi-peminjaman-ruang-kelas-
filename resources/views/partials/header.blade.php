@@ -6,7 +6,7 @@
          </li>
          <li class="nav-item d-none d-sm-inline-block">
              <a class="nav-link animasi-teks text-bold">
-                 SISTEM INFORMASI PEMINJAMAN PERANGKAT PEMBELAJARAN
+                 {{ $setting->nama_aplikasi }}
              </a>
          </li>
      </ul>
@@ -17,7 +17,7 @@
          <!-- Messages Dropdown Menu -->
          <li class="nav-item dropdown mr-3">
              <a class="nav-link" data-toggle="dropdown" href="javascript:void(0);">
-                 <img src="{{ asset('assets/logo/logo.jpg') }}" class="img-circle" alt="User Image"
+                 <img src="{{ Storage::url($setting->logo_aplikasi) }}" class="img-circle" alt="User Image"
                      style="width: 29px ">
                  {{ auth()->user()->name }}
              </a>
