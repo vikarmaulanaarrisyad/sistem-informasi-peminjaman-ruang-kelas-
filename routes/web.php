@@ -16,6 +16,7 @@ use App\Http\Controllers\{
     SettingController,
     UserProfileInformationController
 };
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
