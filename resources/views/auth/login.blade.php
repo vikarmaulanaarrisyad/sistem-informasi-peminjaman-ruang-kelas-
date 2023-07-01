@@ -23,11 +23,11 @@
                                     @csrf
 
                                     <div class="form-group mb-3">
-                                        <label for="email">Email</label>
-                                        <input type="email" class="form-control @error('email') is-invalid @enderror"
-                                            id="email" name="email" value="{{ old('email') }}" autocomplete="off">
+                                        <label for="auth">Username</label>
+                                        <input type="text" class="form-control @error('auth') is-invalid @enderror"
+                                            id="auth" name="auth" value="{{ old('auth') }}" placeholder="Masukan username" autocomplete="off">
 
-                                        @error('email')
+                                        @error('auth')
                                             <span class="invalid-feedback">
                                                 {{ $message }}
                                             </span>
@@ -36,7 +36,7 @@
                                     <div class="form-group mb-3">
                                         <label for="password">Password</label>
                                         <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                            id="password" name="password" autocomplete="off">
+                                            id="password" name="password" autocomplete="off" placeholder="Masukan password">
 
                                         @error('password')
                                             <span class="invalid-feedback">

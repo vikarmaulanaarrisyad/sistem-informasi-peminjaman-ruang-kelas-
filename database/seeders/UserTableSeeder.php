@@ -22,14 +22,5 @@ class UserTableSeeder extends Seeder
         $admin->email = 'admin@gmail.com';
         $admin->role_id = 1;
         $admin->save();
-
-        $mhs = new User();
-        $mhs->name = 'Mahasiswa 1';
-        $mhs->username = 'mahasiswa';
-        $mhs->password = Hash::make(123456);
-        $mhs->pass = '123456';
-        $mhs->email = 'mahasiswa1@gmail.com';
-        $mhs->role_id = 2;
-        $mhs->save();
     }
 }
