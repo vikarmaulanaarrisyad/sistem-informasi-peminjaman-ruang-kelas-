@@ -42,6 +42,16 @@ Route::group([
         ->name('profile.show.password');
 
 
+    Route::get('/storage-link', function () {
+        Artisan::call('storage:link');
+        return 'Storage Success';
+    });
+    Route::get('/route-cache', function () {
+        Artisan::call('route:cache');
+        return 'Route cache cleared! <br> Routes cached successfully!';
+    });
+
+
     Route::group([
         'middleware' => 'role:admin',
         'prefix' => 'admin'
