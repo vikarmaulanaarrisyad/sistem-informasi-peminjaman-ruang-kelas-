@@ -19,6 +19,7 @@
                     <x-slot name="thead">
                         <tr>
                             <th>NO</th>
+                            <th>HARI</th>
                             <th>MATAKULIAH</th>
                             <th>DOSEN</th>
                             <th>KELAS</th>
@@ -40,6 +41,7 @@
 
         table = $('.jadwal-mahasiswa').DataTable({
             processing: true,
+            serverSide: true,
             autoWidth: false,
             ajax: {
                 url: '{{ route('mahasiswa.jadwal.data') }}',
@@ -50,6 +52,9 @@
                     sortable: false
                 },
 
+                {
+                    data: 'hari'
+                },
                 {
                     data: 'matakuliah'
                 },
