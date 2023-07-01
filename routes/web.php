@@ -94,6 +94,8 @@ Route::group([
         /* ROUTE JADWAL */
 
         Route::get('jadwal/data', [JadwalController::class, 'data'])->name('jadwal.data');
+        Route::get('jadwal/data_jadwal', [JadwalController::class, 'data2'])->name('jadwal.data_jadwal');
+        Route::get('jadwal/view', [JadwalController::class, 'view'])->name('jadwal.view');
         Route::resource('jadwal', JadwalController::class)->except('edit');
         Route::get('jadwal/{jadwal}/detail', [JadwalController::class, 'detail'])->name('jadwal.detail');
 

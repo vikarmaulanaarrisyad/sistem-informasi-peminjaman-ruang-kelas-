@@ -46,20 +46,11 @@
 
                  @if (Auth()->user()->hasRole('admin'))
                      <li class="nav-item">
-                         <a href="{{ route('mahasiswa.index') }}"
-                             class="nav-link {{ request()->is('admin/mahasiswa*') ? 'active' : '' }}">
-                             <i class="nav-icon fas fa-users"></i>
+                         <a href="{{ route('perlengkapan.index') }}"
+                             class="nav-link {{ request()->is('admin/perlengkapan*') ? 'active' : '' }}">
+                             <i class="nav-icon fas fa-wrench"></i>
                              <p>
-                                 Data Mahasiswa
-                             </p>
-                         </a>
-                     </li>
-                     <li class="nav-item">
-                         <a href="{{ route('dosen.index') }}"
-                             class="nav-link {{ request()->is('admin/dosen*') ? 'active' : '' }}">
-                             <i class="nav-icon fas fa-user"></i>
-                             <p>
-                                 Data Dosen
+                                 Data Perlengkapan
                              </p>
                          </a>
                      </li>
@@ -91,6 +82,24 @@
                          </a>
                      </li>
                      <li class="nav-item">
+                         <a href="{{ route('mahasiswa.index') }}"
+                             class="nav-link {{ request()->is('admin/mahasiswa*') ? 'active' : '' }}">
+                             <i class="nav-icon fas fa-users"></i>
+                             <p>
+                                 Data Mahasiswa
+                             </p>
+                         </a>
+                     </li>
+                     <li class="nav-item">
+                         <a href="{{ route('dosen.index') }}"
+                             class="nav-link {{ request()->is('admin/dosen*') ? 'active' : '' }}">
+                             <i class="nav-icon fas fa-user"></i>
+                             <p>
+                                 Data Dosen
+                             </p>
+                         </a>
+                     </li>
+                     <li class="nav-item">
                          <a href="{{ route('jadwal.index') }}"
                              class="nav-link {{ request()->is('admin/jadwal*') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-calendar-alt"></i>
@@ -99,15 +108,7 @@
                              </p>
                          </a>
                      </li>
-                     <li class="nav-item">
-                         <a href="{{ route('perlengkapan.index') }}"
-                             class="nav-link {{ request()->is('admin/perlengkapan*') ? 'active' : '' }}">
-                             <i class="nav-icon fas fa-wrench"></i>
-                             <p>
-                                 Data Perlengkapan
-                             </p>
-                         </a>
-                     </li>
+
                      <li class="nav-header">TRANSAKSI</li>
                      <li class="nav-item">
                          <a href="{{ route('peminjaman.index') }}"
@@ -142,7 +143,8 @@
                      </li>
                  @else
                      <li class="nav-item">
-                         <a href="{{ route('mahasiswa.jadwal.index') }}" class="nav-link {{ request()->is('mahasiswa/jadwal') ? 'active' : '' }}">
+                         <a href="{{ route('mahasiswa.jadwal.index') }}"
+                             class="nav-link {{ request()->is('mahasiswa/jadwal') ? 'active' : '' }}">
                              <i class="nav-icon fas fa-calendar-alt"></i>
                              <p>
                                  Data Jadwal

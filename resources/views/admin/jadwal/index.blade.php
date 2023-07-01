@@ -14,11 +14,13 @@
         <div class="col-md-12 col-lg-12">
             <x-card>
                 <x-slot name="header">
-                    <div class="d-flex">
+                    <div class="d-sm-flex flex-row">
                         @if (auth()->user()->hasRole('admin'))
-                            <button onclick="createForm()" class="btn btn-outline-primary btn-sm float-right"><i
+                            <button onclick="createForm()" class="btn btn-outline-primary btn-sm mr-3"><i
                                     class="fas fa-plus-circle"></i> Tambah
                                 Data</button>
+                            <button onclick="viewJadwalAll()" class="btn btn-outline-info btn-sm"><i
+                                    class="fas fa-eye"></i> Lihat Semua Jadwal</button>
                         @endif
 
                     </div>

@@ -12,6 +12,7 @@
 
         table = $('#table').DataTable({
             processing: true,
+            serverSide: true,
             autoWidth: false,
             ajax: {
                 url: '{{ route('mahasiswa.data') }}',

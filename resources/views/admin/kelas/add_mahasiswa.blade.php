@@ -76,6 +76,7 @@
 
         table = $('.table-mahasiswa').DataTable({
             processing: true,
+            serverSide: true,
             autoWidth: false,
             ajax: {
                 url: '{{ route('kelas.mahasiswa.data') }}',

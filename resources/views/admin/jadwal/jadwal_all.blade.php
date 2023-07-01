@@ -1,35 +1,75 @@
-@push('css')
-    <style>
-        button#html5-qrcode-button-camera-stop {
-            display: none !important;
-        }
-    </style>
-@endpush
+@extends('layouts.app')
+
+@section('title', 'Jadwal Matakuliah')
+
+@section('breadcrumb')
+    @parent
+    <li class="breadcrumb-item"><a href="{{ route('jadwal.index') }}">Jadwal</a></li>
+    <li class="breadcrumb-item active">Daftar Jadwal Matakuliah</li>
+@endsection
+
+@section('content')
+    <div class="row">
+        <div class="col-lg-12">
+            <x-card>
+                <x-slot name="header">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Jadwal Matakuliah</span>
+                </x-slot>
+
+                <x-table class="jadwal2 hover">
+                    <x-slot name="thead">
+                        <tr>
+                            <th>NO</th>
+                            <th>Hari</th>
+                            <th>MATAKULIAH</th>
+                            <th>DOSEN</th>
+                            <th>KELAS</th>
+                            <th>MULAI</th>
+                            <th>SELESAI</th>
+                            <th>RUANG</th>
+                            <th>AKSI</th>
+                        </tr>
+                    </x-slot>
+                </x-table>
+
+            </x-card>
+        </div>
+    </div>
+    @includeIf('admin.jadwal.form')
+
+@endsection
+
+@include('include.datepicker')
+
+@include('include.datatable')
 
 @push('scripts')
     <script>
+        let table2;
         let modal = '#modal-form';
         let modalDetail = '#modal-detail';
         let button = '#submitBtn';
-        let table;
 
-        $(function() {
-            $('#spinner-border').hide();
-        });
-
-        table = $('#table').DataTable({
+        table2 = $('.jadwal2').DataTable({
             processing: true,
             autoWidth: false,
             serverSide: true,
             ajax: {
-                url: '{{ route('jadwal.data') }}',
+                url: '{{ route('jadwal.data_jadwal') }}',
             },
             columns: [{
                     data: 'DT_RowIndex',
                     searchable: false,
-                    sortable: false
+                    sortable: false,
+                    scrollX: true,
+
                 },
 
+                {
+                    data: 'hari',
+
+                },
                 {
                     data: 'matakuliah'
                 },
@@ -49,23 +89,13 @@
                     data: 'ruang'
                 },
 
-                    {
-                        data: 'aksi',
-                        sortable: false,
-                        searchable: false
-                    },
+                {
+                    data: 'aksi',
+                    sortable: false,
+                    searchable: false
+                },
             ]
         });
-
-        function addForm(url, title = 'Tambah Daftar Jadwal') {
-            $(modal).modal('show');
-            $(`${modal} .modal-title`).text(title);
-            $(`${modal} form`).attr('action', url);
-            $(`${modal} [name=_method]`).val('POST');
-            $('#spinner-border').hide();
-            $(button).prop('disabled', false);
-            resetForm(`${modal} form`);
-        }
 
         function editForm(url, title = 'Edit Daftar Jadwal') {
             $.get(url)
@@ -129,16 +159,6 @@
                 });
         }
 
-        function detailForm(url, title = 'Scan QRCode') {
-            $.get(url)
-                .done(response => {
-                    $(modalDetail).modal('show');
-                    $(`${modalDetail} .modal-title`).text(title);
-                    ScanQR(response.data.id);
-                })
-
-        }
-
         function submitForm(originalForm) {
             $(button).prop('disabled', true);
             $('#spinner-border').show();
@@ -183,7 +203,7 @@
                 });
         }
 
-        function deleteData(url, name) {
+         function deleteData(url, name) {
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
                     confirmButton: 'btn btn-success',
@@ -193,8 +213,7 @@
             })
             swalWithBootstrapButtons.fire({
                 title: 'Apakah anda yakin?',
-                text: 'Anda akan menghapus petugas ' + name +
-                    ' !',
+                text: 'Anda akan menghapus jadwal ini',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -216,7 +235,7 @@
                                     showConfirmButton: false,
                                     timer: 2000
                                 })
-                                table.ajax.reload();
+                                table2.ajax.reload();
                             }
                         })
                         .fail(errors => {
@@ -227,90 +246,10 @@
                                 showConfirmButton: false,
                                 timer: 3000
                             })
-                            table.ajax.reload();
                         });
                 }
             })
         }
 
-        function ScanQR(jadwalId) {
-            function onScanSuccess(decodedText, decodedResult) {
-                let nim = decodedText;
-                csrf_token = $('meta[name="csrf-token"]').attr('content');
-                html5QrcodeScanner.clear();
-
-                $(modalDetail).modal('hide');
-
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Scan berhasil',
-                    text: 'NIM Mahasiswa ' + nim,
-                    showConfirmButton: false,
-                    timer: 3000
-                }).then(() => {
-                    $.ajax({
-                        type: "POST",
-                        url: "{{ route('peminjaman.store') }}",
-                        data: {
-                            'nim': nim,
-                            'jadwal_id': jadwalId,
-                            '_token': csrf_token
-                        },
-                        success: function(response) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.message,
-                                showConfirmButton: false,
-                                timer: 3000
-                            }).then(() => {
-                                table.ajax.reload();
-                                window.location.href = '{{ route('peminjaman.index') }}';
-                            });
-                        },
-                        error: function(response) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Opps! Gagal!',
-                                text: response.responseJSON.message,
-                                showConfirmButton: false,
-                                timer: 3000
-                            }).then(() => {
-                                table.ajax.reload();
-
-                                // window.location.href = '{{ route('jadwal.index') }}';
-                            });
-                        }
-                    });
-                });
-
-            }
-
-            function onScanFailure(error) {
-                // handle scan failure, usually better to ignore and keep scanning.
-                // for example:
-                // console.warn(`Code scan error = ${error}`);
-            }
-
-            let html5QrcodeScanner = new Html5QrcodeScanner(
-                "reader", {
-                    fps: 10,
-                    qrbox: {
-                        width: 250,
-                        height: 250
-                    }
-                },
-                /* verbose= */
-                false);
-            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-        }
-
-        function createForm() {
-            window.location.href = '{{ route('jadwal.create') }}';
-        }
-
-        function viewJadwalAll() {
-            window.location.href = '{{ route('jadwal.view') }}';
-         }
     </script>
 @endpush

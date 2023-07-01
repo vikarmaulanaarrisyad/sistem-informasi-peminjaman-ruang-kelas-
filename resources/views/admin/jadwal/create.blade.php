@@ -8,6 +8,8 @@
     <li class="breadcrumb-item active">Tambah Jadwal</li>
 @endsection
 
+
+
 @section('content')
     <div class="row">
         <div class="col-lg-12">
@@ -31,7 +33,8 @@
                         <div class="col-lg-4">
                             <div class="form-group">
                                 <label for="matakuliah">Pilih Matkul</label>
-                                <select name="matakuliah_id" id="matakuliah_id" class="form-control select2" style="width: 100%">
+                                <select name="matakuliah_id" id="matakuliah_id" class="form-control select2"
+                                    style="width: 100%">
                                 </select>
                             </div>
                         </div>
@@ -94,11 +97,10 @@
                     <hr>
 
                     <div class="row">
-
-                        <div class="col-lg-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="my-input">Pilih Hari</label>
-                                <div class="d-flex">
+                                <div id="hari2" class="d-sm-flex flex-row">
                                     @foreach ($namaHari as $hari)
                                         <div class="form-check ml-2">
                                             <input class="form-check-input" type="checkbox" name="hari[]" id="hari"
@@ -129,15 +131,58 @@
 
         </div>
     </div>
+
 @endsection
 
 @include('include.select2')
 
 @include('include.datepicker')
+@include('include.datatable')
 
 @push('scripts')
     <script>
         let button = '#submitBtn';
+        let table2;
+
+        table2 = $('.jadwal2').DataTable({
+              processing: true,
+            autoWidth: false,
+            ajax: {
+                url: '{{ route('jadwal.data_jadwal') }}',
+            },
+            columns: [{
+                    data: 'DT_RowIndex',
+                    searchable: false,
+                    sortable: false
+                },
+
+                {
+                    data: 'matakuliah'
+                },
+                {
+                    data: 'dosen'
+                },
+                {
+                    data: 'kelas'
+                },
+                {
+                    data: 'waktu_mulai'
+                },
+                {
+                    data: 'waktu_selesai'
+                },
+                {
+                    data: 'ruang'
+                },
+
+                    {
+                        data: 'aksi',
+                        sortable: false,
+                        searchable: false
+                    },
+            ]
+        });
+
         $(document).ready(function() {
             $('#spinner-border').hide();
         });
@@ -197,6 +242,7 @@
                     }
                     $(button).prop('disabled', false);
                     $('#spinner-border').hide();
+                    table2.ajax.reload();
                 },
                 error: function(errors) {
                     $('#spinner-border').hide();

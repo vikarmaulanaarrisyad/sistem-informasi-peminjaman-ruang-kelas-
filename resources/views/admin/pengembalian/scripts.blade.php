@@ -21,6 +21,7 @@
 
         table1 = $('.pengembalian-table').DataTable({
             processing: true,
+            serverSide: true,
             autoWidth: false,
             ajax: {
                 url: '{{ route('pengembalian.data') }}',

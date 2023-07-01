@@ -54,7 +54,6 @@ class DosenController extends Controller
     {
         $rules = [
             'name' => 'required',
-            'nomor_hp' => 'required|numeric|min:11',
         ];
 
         $message = [
@@ -69,7 +68,7 @@ class DosenController extends Controller
 
         $data = [
             'name' => trim($request->name),
-            'nomor_hp' => trim($request->nomor_hp),
+            'nomor_hp' => trim($request->nomor_hp) ?? 0,
         ];
 
         $result = Dosen::create($data);
@@ -100,7 +99,6 @@ class DosenController extends Controller
     {
         $rules = [
             'name' => 'required',
-            'nomor_hp' => 'required|numeric|min:11',
         ];
 
         $message = [
@@ -115,7 +113,7 @@ class DosenController extends Controller
 
         $data = [
             'name' => trim($request->name),
-            'nomor_hp' => trim($request->nomor_hp),
+            'nomor_hp' => trim($request->nomor_hp) ?? 0,
         ];
 
         $result = $dosen->update($data);

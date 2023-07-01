@@ -78,6 +78,7 @@
 
         table1 = $('.dosen-table').DataTable({
             processing: true,
+            serverSide: true,
             autoWidth: false,
             ajax: {
                 url: '{{ route('dosen.get_matakuliah_dosen', $dosen->id) }}',
@@ -104,6 +105,7 @@
 
         table2 = $('.matakuliah-table').DataTable({
             processing: true,
+            serverSide: true,
             autoWidth: false,
             ajax: {
                 url: '{{ route('dosen.matakuliah.data', $dosen->id) }}',
@@ -159,7 +161,7 @@
         }
 
         function submitForm(url, dosenId) {
-            
+
             $('#spinner-border').show();
             const swalWithBootstrapButtons = Swal.mixin({
                 customClass: {
