@@ -99,7 +99,7 @@ class JadwalController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function data2(Request $request)
+    public function data3(Request $request)
     {
         $query = Jadwal::all();
         return datatables($query)
@@ -151,6 +151,83 @@ class JadwalController extends Controller
                                 <button onclick="detailForm(`' . route('jadwal.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
                             </div>
                         ';
+                        }
+                    }
+                    return '
+                    <div class="btn-group">
+                        <button onclick="editForm(`' . route('jadwal.show', $query->id) . '`)" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt"></i> Edit</button>
+                        <button onclick="deleteData(`' . route('jadwal.destroy', $query->id) . '`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>
+                    </div>
+                    ';
+                    // <button onclick="detailForm(`' . route('jadwal.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
+                }
+            })
+            ->rawColumns(['aksi'])
+            ->escapeColumns([])
+            ->make(true);
+    }
+
+    public function data2(Request $request)
+    {
+        $query = Jadwal::all();
+        return datatables($query)
+            ->addIndexColumn()
+            ->addColumn('kelas', function ($query) {
+                if ($query->kelas_id == null) {
+                    return 'Belum ada kelas';
+                }
+                return $query->kelas->name;
+            })
+            ->addColumn('matakuliah', function ($query) {
+                if ($query->matakuliah_id == null) {
+                    return 'Belum ada kelas';
+                }
+                return $query->matakuliah->name;
+            })
+            ->addColumn('dosen', function ($query) {
+                return $query->dosen->name ?? '';
+            })
+            ->addColumn('ruang', function ($query) {
+                if ($query->ruang_id == null) {
+                    return '';
+                }
+                return $query->ruang->name;
+            })
+            ->addColumn('aksi', function ($query) {
+                if ($query->jadwal_id > 0) {
+                    // // Kode yang akan dijalankan jika jadwal_id kosong (NULL)
+                    // // Misalnya, tambahkan logika alternatif atau kembalikan respons yang sesuai
+                    // return 'Kosong';
+                    return '
+                    <div class="btn-group">
+                        <button onclick="detailForm(`' . route('jadwal.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
+                    </div>
+                ';
+                } else {
+                    foreach ($query->peminjaman as $pinjam) {
+                        if ($pinjam->jadwal_id == $query->id && $pinjam->status == "pinjam") {
+                            // Kode yang akan dijalankan jika jadwal_id terisi dan kondisi terpenuhi
+                            // Misalnya, tambahkan logika tambahan atau kembalikan respons yang sesuai
+                            return '
+                            <div class="btn-group">
+                                <button disabled class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
+                            </div>
+                        ';
+                        } else {
+
+                            //     return '
+                            //     <div class="btn-group">
+                            //         <button onclick="detailForm(`' . route('jadwal.detail', $query->id) . '`)" class="btn btn-sm btn-success"><i class="fas fa-eye"></i> Pinjam</button>
+                            //     </div>
+                            // ';
+                            return '
+                    <div class="btn-group">
+                        <button onclick="editForm(`' . route('jadwal.show', $query->id) . '`)" class="btn btn-sm btn-warning"><i class="fas fa-pencil-alt"></i> Edit</button>
+
+                    </div>
+                    ';
+
+                            //   <button onclick="deleteData(`' . route('jadwal.destroy', $query->id) . '`)" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>
                         }
                     }
                     return '
