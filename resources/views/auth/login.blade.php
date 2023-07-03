@@ -15,7 +15,8 @@
                                 {{-- <a href="{{ url('/') }}">
                                     <img src="{{ asset('images/logo/pmb.png') }}" alt="" class="w-50 mb-4">
                                 </a> --}}
-                                <h4 class="login-heading text-bold text-center">{{ $setting->nama_singkatan ?? config('app.name') }}</h4>
+                                <h4 class="login-heading text-bold text-center">
+                                    {{ $setting->nama_singkatan ?? config('app.name') }}</h4>
                                 <h4 class="login-heading text-bold text-center mb-4">Politeknik Harapan Bersama</h4>
                                 <p>{{ $setting->diskripsi_aplikasi ?? '' }}</p>
                                 {{-- Form --}}
@@ -25,7 +26,8 @@
                                     <div class="form-group mb-3">
                                         <label for="auth">Username</label>
                                         <input type="text" class="form-control @error('auth') is-invalid @enderror"
-                                            id="auth" name="auth" value="{{ old('auth') }}" placeholder="Masukan username" autocomplete="off">
+                                            id="auth" name="auth" value="{{ old('auth') }}"
+                                            placeholder="Masukan username" autocomplete="off">
 
                                         @error('auth')
                                             <span class="invalid-feedback">
@@ -36,7 +38,8 @@
                                     <div class="form-group mb-3">
                                         <label for="password">Password</label>
                                         <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                            id="password" name="password" autocomplete="off" placeholder="Masukan password">
+                                            id="password" name="password" autocomplete="off"
+                                            placeholder="Masukan password">
 
                                         @error('password')
                                             <span class="invalid-feedback">
@@ -47,8 +50,9 @@
 
                                     <div class="form-group d-flex justify-content-between align-items-center mb-3">
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                            <label for="customCheck1" class="custom-control-label text-muted">show password</label>
+                                            <input type="checkbox" class="custom-control-input form-checkbox" id="customCheck1">
+                                            <label for="customCheck1" class="custom-control-label text-muted">show
+                                                password</label>
                                         </div>
                                         <a href="{{ route('register') }}" class="small mt-1 text-muted">Register Akun?</a>
                                     </div>
@@ -61,7 +65,7 @@
 
                                     <div class="text-center mt-3">
                                         <div class="text-muted">
-                                          {{ $setting->nama_aplikasi ?? 'POLITEKNIK HARAPAN BERSAMA TEGAL' }}
+                                            {{ $setting->nama_aplikasi ?? 'POLITEKNIK HARAPAN BERSAMA TEGAL' }}
                                         </div>
                                     </div>
                                 </form>

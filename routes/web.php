@@ -12,6 +12,7 @@ use App\Http\Controllers\{
     PengembalianController,
     PerlengkapanController,
     QrCodeController,
+    ReportController,
     RuangController,
     SettingController,
     UserProfileInformationController
@@ -128,6 +129,10 @@ Route::group([
         Route::resource('pengembalian', PengembalianController::class)->except('edit', 'create');
 
         Route::resource('setting', SettingController::class);
+
+        Route::get('/report', [ReportController::class, 'index'])->name('report.index');
+        Route::get('/report/data/{start}/{end}', [ReportController::class, 'data'])->name('report.data');
+        Route::get('/report/pdf/{start}/{end}', [ReportController::class, 'exportPDF'])->name('report.export_pdf');
     });
     Route::group([
         'middleware' => 'role:mahasiswa',
@@ -136,6 +141,6 @@ Route::group([
         //Scanner
         Route::get('/jadwal', [JadwalMahasiswaController::class, 'index'])->name('mahasiswa.jadwal.index');
         Route::get('/jadwal/data', [JadwalMahasiswaController::class, 'data'])->name('mahasiswa.jadwal.data');
-        Route::get('/qrcode/download/{nim}', [QrCodeController::class,'download'])->name('qrcode.download');
+        Route::get('/qrcode/download/{nim}', [QrCodeController::class, 'download'])->name('qrcode.download');
     });
 });

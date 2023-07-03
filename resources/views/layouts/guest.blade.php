@@ -72,4 +72,18 @@
         integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous">
     </script>
 
+    @stack('scripts')
+
+    <script>
+        $('.custom-control-input').click(function() {
+            if ($(this).is(':checked')) {
+                $('#password').attr('type', 'text');
+                $('#password_confirmation').attr('type', 'text');
+            } else {
+                $('#password').attr('type', 'password');
+                $('#password_confirmation').attr('type', 'password');
+            }
+        });
+    </script>
+
 </body>

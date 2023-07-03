@@ -14,8 +14,8 @@
         <div class="col-md-12 col-lg-12">
             <x-card>
                 <x-slot name="header">
-                  {{-- <button onclick="addForm(`{{ route('peminjaman.store') }}`)" class="btn btn-outline-primary btn-sm"><i
-                            class="fas fa-plus-circle"></i> Tambah Data</button> --}}
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Daftar Peminjaman</span>
                 </x-slot>
 
                 <x-table>
