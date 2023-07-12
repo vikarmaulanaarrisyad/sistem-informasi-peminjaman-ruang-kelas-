@@ -23,6 +23,7 @@
                         <tr>
                             <th>NO</th>
                             <th>NAMA PERLENGKAPAN</th>
+                            <th>Keterangan</th>
                             <th>AKSI</th>
                         </tr>
                     </x-slot>

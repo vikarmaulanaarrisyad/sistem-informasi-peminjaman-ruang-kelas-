@@ -12,6 +12,14 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label for="keterangan">Keterangan</label>
+                <input type="text" class="form-control" name="keterangan" autocomplete="off">
+            </div>
+        </div>
+    </div>
 
     <x-slot name="footer">
         <button type="button" onclick="submitForm(this.form)" class="btn btn-sm btn-outline-primary" id="submitBtn">

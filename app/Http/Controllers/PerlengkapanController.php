@@ -66,6 +66,7 @@ class PerlengkapanController extends Controller
 
         $data = [
             'name' => trim($request->name),
+            'keterangan' => trim($request->keterangan),
         ];
 
         $result = Perlengkapan::create($data);
@@ -116,6 +117,7 @@ class PerlengkapanController extends Controller
 
         $data = [
             'name' => trim($request->name),
+            'keterangan' => trim($request->keterangan),
         ];
 
         $result = $perlengkapan->update($data);

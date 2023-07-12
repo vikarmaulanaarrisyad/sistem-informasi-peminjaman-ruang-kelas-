@@ -25,6 +25,9 @@
                 {
                     data: 'name'
                 },
+                {
+                    data: 'keterangan'
+                },
 
                 {
                     data: 'aksi',
