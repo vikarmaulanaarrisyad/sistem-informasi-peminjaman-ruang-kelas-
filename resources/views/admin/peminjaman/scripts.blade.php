@@ -37,7 +37,9 @@
                 {
                     data: 'selesai'
                 },
-
+                {
+                    data: 'keterangan_alat'
+                },
 
             ]
         });

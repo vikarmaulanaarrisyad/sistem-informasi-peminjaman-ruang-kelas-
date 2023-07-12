@@ -44,6 +44,11 @@ class PeminjamanController extends Controller
             ->addColumn('status', function ($query) {
                 return '<span class="badge badge-' . $query->statusColor() . '">' . $query->statusText() . '</span>';
             })
+            ->addColumn('keterangan_alat', function ($query) {
+                foreach ($query->jadwal->ruang->perlengkapan as $perlengkapan) {
+                    return $perlengkapan->keterangan ?? '-';
+                }
+            })
             ->escapeColumns([])
             ->make(true);
     }

@@ -27,6 +27,7 @@
                             <th>STATUS</th>
                             <th>MULAI</th>
                             <th>SELESAI</th>
+                            <th>Keterangan Alat</th>
                         </tr>
                     </x-slot>
                 </x-table>
