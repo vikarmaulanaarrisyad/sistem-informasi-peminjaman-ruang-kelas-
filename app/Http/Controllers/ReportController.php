@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jadwal;
 use App\Models\Peminjaman;
+use App\Models\Ruang;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Http\Request;
 
@@ -27,20 +29,12 @@ class ReportController extends Controller
         $data = [];
         $i = 1;
 
-        $peminjaman = Peminjaman::with('jadwal','mahasiswa')
-            ->whereBetween('created_at',[$start,$end])
+        $peminjaman = Peminjaman::with(['jadwal', 'mahasiswa', 'jadwal.ruang', 'jadwal.ruang.perlengkapan'])
+            ->whereBetween('created_at', [$start, $end])
             ->get();
 
         if ($peminjaman->isEmpty()) {
-            $data[] = [
-                'DT_RowIndex' => '',
-                'tanggal' => '',
-                'mahasiswa' => '',
-                'ruang' => '',
-                'jammulai' => '',
-                'jamselesai' => '',
-                'status' => '',
-            ];
+            // ...
         } else {
             foreach ($peminjaman as $pinjam) {
                 $row = [];
@@ -50,12 +44,23 @@ class ReportController extends Controller
                 $row['ruang'] = $pinjam->jadwal->ruang->name ?? '';
                 $row['jammulai'] = $pinjam->jadwal->waktu_mulai;
                 $row['jamselesai'] = $pinjam->jadwal->waktu_selesai;
-                $row['status'] = '<span class=" badge badge-' . $pinjam->statusColor() . ' ">' . $pinjam->statusText() . '</span >';
+
+                $perlengkapanInfo = '';
+                $keterangan = '';
+                foreach ($pinjam->jadwal->ruang->perlengkapan as $perlengkapan) {
+                    $perlengkapanInfo .= $perlengkapan->name . ', ' . '<br>';
+                    $keterangan .= $perlengkapan->keterangan . ', ' . '<br>';
+                }
+                $perlengkapanInfo = rtrim($perlengkapanInfo, ', '); // Menghilangkan koma di akhir
+                $row['perlengkapan'] = $perlengkapanInfo;
+                $row['keterangan'] = $keterangan;
+                $row['status'] = '<span class="badge badge-' . $pinjam->statusColor() . '">' . $pinjam->statusText() . '</span>';
+
+                $row['aksi'] = ' <button onclick="detailForm(`' . route('peminjaman.detail', $pinjam->id) . '`, `' . $pinjam->jadwal->ruang->name . '`)" class="btn btn-success btn-sm"><i class="fas fa-eye"></i> Detail</button>';
 
                 $data[] = $row;
             }
         }
-
         return $data;
     }
 
@@ -71,8 +76,8 @@ class ReportController extends Controller
     public function exportPDF($start, $end)
     {
         $data = $this->getData($start, $end);
-        $pdf = PDF::loadView('admin.report.pdf', compact('start', 'end', 'data'));
+        $pdf = PDF::loadView('admin.report.pdf', compact('start', 'end', 'data'))->setPaper('a4', 'landscape');
 
-        return $pdf->download('Laporan-peminjaman-alat-' . date('Y-m-d-his') . '.pdf');
+        return $pdf->stream('Laporan-peminjaman-alat-' . date('Y-m-d-his') . '.pdf');
     }
 }

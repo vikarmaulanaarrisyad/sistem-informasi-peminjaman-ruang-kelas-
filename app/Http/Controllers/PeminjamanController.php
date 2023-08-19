@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Jadwal;
 use App\Models\Mahasiswa;
 use App\Models\Peminjaman;
+use App\Models\Perlengkapan;
+use App\Models\Ruang;
 use DateTime;
 use Illuminate\Http\Request;
 
@@ -139,5 +141,17 @@ class PeminjamanController extends Controller
     public function destroy(Peminjaman $peminjaman)
     {
         //
+    }
+
+    public function detail($id)
+    {
+
+        $peminjaman = Peminjaman::with('jadwal')->findOrfail($id);
+
+        $jadwal = Jadwal::where('id', $peminjaman->jadwal_id)->first();
+
+        $ruang = Ruang::with('perlengkapan')->get();
+
+        return response()->json(['data' => $ruang]);
     }
 }

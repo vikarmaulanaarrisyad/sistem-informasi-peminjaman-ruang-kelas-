@@ -12,15 +12,15 @@
             <x-card>
                 <x-slot name="header">
                     <div class="btn-group">
-                        <button data-toggle="modal" data-target="#modal-form" class="btn btn-sm btn-primary"><i
-                                class="fas fa-pencil-alt"></i> Ubah Periode</button>
+                        <button onclick="ubahPeriode()" class="btn btn-sm btn-primary"><i class="fas fa-pencil-alt"></i> Ubah
+                            Periode</button>
 
                         <a target="_blank" href="{{ route('report.export_pdf', compact('start', 'end')) }}"
                             class="btn btn-sm btn-danger"><i class="fas fa-file-pdf"></i> Export PDF</a>
                     </div>
                 </x-slot>
 
-                <x-table>
+                <x-table class="laporan">
                     <x-slot name="thead">
                         <th width="5%">No</th>
                         <th>Hari / Tanggal</th>
@@ -29,13 +29,15 @@
                         <th>Jam Mulai</th>
                         <th>Jam Selesai</th>
                         <th>Status</th>
+                        <th>Aksi</th>
                     </x-slot>
                 </x-table>
             </x-card>
         </div>
     </div>
 
-    @include('admin.report.form')
+    @includeIf('admin.report.form')
+    @include('admin.report.modal')
 @endsection
 
 @includeIf('include.datatable')
@@ -43,10 +45,11 @@
 
 @push('scripts')
     <script>
-        let modal = '#modal-form';
-        let table;
+        let modal = '#modal-periode';
+        let modalDetail = '#modal-detail';
+        let table, tabl2;
 
-        table = $('.table').DataTable({
+        table = $('.laporan').DataTable({
             processing: true,
             autoWidth: false,
             ajax: {
@@ -87,6 +90,11 @@
                     searchable: false,
                     sortable: false,
                 },
+                {
+                    data: 'aksi',
+                    searchable: false,
+                    sortable: false,
+                },
             ],
             paginate: false,
             searching: false,
@@ -108,6 +116,34 @@
                         return;
                     });
             }
+        }
+
+        function ubahPeriode() {
+            $(`${modal}`).modal('show');
+        }
+
+        function detailForm(url, title) {
+            $.get(url)
+                .done(response => {
+                    console.log(response);
+
+                    // Menampilkan modal
+                    $(modalDetail).modal('show');
+                    $(`${modalDetail} .modal-title`).text('Detail Ruang ' + title);
+
+                    // Mengisi tabel dengan informasi perlengkapan
+                    const perlengkapanTable = $('#detail tbody');
+                    perlengkapanTable.empty();
+
+                    response.data[0].perlengkapan.forEach(item => {
+                        perlengkapanTable.append(`
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.keterangan}</td>
+                    </tr>
+                `);
+                    });
+                });
         }
     </script>
 @endpush

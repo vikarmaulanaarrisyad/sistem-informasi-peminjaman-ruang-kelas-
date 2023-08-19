@@ -1,4 +1,4 @@
-<x-modal size="modal-lg" method="get">
+<x-modal size="modal-lg" method="get" id="modal-periode">
     <x-slot name="title">
         Tambah
     </x-slot>

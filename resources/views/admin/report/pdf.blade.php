@@ -28,6 +28,8 @@
                 <th style="text-align: center">Nama Ruang</th>
                 <th style="text-align: center">Jam Mulai</th>
                 <th style="text-align: center">Jam Selesai</th>
+                <th style="text-align: center">Nama Alat</th>
+                <th style="text-align: center">Keterangan</th>
                 <th style="text-align: center">Status</th>
             </tr>
         </thead>
@@ -35,7 +37,9 @@
             @foreach ($data as $row)
                 <tr>
                     @foreach ($row as $key => $col)
-                        <td {!! $key > 1 ? 'class="text-left"' : '' !!}>{!! $col !!}</td>
+                        @if ($key !== 'aksi')
+                            <td {!! $key > 1 ? 'class="text-left"' : '' !!}>{!! $col !!}</td>
+                        @endif
                     @endforeach
                 </tr>
             @endforeach
@@ -46,7 +50,9 @@
         <p class="text-right mr-4" style="margin-bottom: 0">Tegal, {{ tanggal_indonesia(Date('Y-m-d')) }}</p>
         <p class="text-right mr-5" style="margin-bottom: 0">Disahkan Oleh</p>
         <p class="text-right text-bold" style="margin-right: 4.5em">Ka Prodi</p>
-        <p class="text-right mr-1" style="margin-right: 4.5em; margin-top: 4em; text-decoration: underline; margin-bottom: 0px;">Ida Afriliana, S.T., M.Kom</p>
+        <p class="text-right mr-1"
+            style="margin-right: 4.5em; margin-top: 4em; text-decoration: underline; margin-bottom: 0px;">Ida Afriliana,
+            S.T., M.Kom</p>
         <p class="text-right" style="margin-right: 2.5em">NIPY. 12.013.168</p>
     </div>
 

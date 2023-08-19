@@ -117,6 +117,7 @@ Route::group([
 
         //Route peminjaman
         Route::get('peminjaman/data', [PeminjamanController::class, 'data'])->name('peminjaman.data');
+        Route::get('peminjaman/{id}detail',[PeminjamanController::class, 'detail'])->name('peminjaman.detail');
         Route::resource('peminjaman', PeminjamanController::class);
 
         //Route perlengkapan
@@ -133,6 +134,7 @@ Route::group([
         Route::get('/report', [ReportController::class, 'index'])->name('report.index');
         Route::get('/report/data/{start}/{end}', [ReportController::class, 'data'])->name('report.data');
         Route::get('/report/pdf/{start}/{end}', [ReportController::class, 'exportPDF'])->name('report.export_pdf');
+
     });
     Route::group([
         'middleware' => 'role:mahasiswa',
